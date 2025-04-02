@@ -19,7 +19,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/user")
 public class ClientController {
 
 	@Autowired
@@ -35,12 +35,10 @@ public class ClientController {
 		return ResponseEntity.ok(clientService.getClients(pagination));
 	}
 
-
 	@GetMapping(value = "/get/{id}")
 	public ResponseEntity<ClientDto> getById(@PathVariable @Positive Long id) {
 		return ResponseEntity.ok(clientService.getById(id));
 	}
-
 
 	@DeleteMapping(value = "/delete/{id}")
 	public ResponseEntity<Void> deleteById(@PathVariable @Positive Long id) {
