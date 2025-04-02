@@ -1,6 +1,7 @@
 package com.tbass.conquier.dtos;
 
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,11 +9,11 @@ import lombok.Setter;
 @Setter
 public class PaginationDto {
 
-	@Positive
-    private Integer page = 1;
+	@Min(0)
+	private Integer page = 0;
 
-	@Positive
-    private Integer size = 10;
-
+	@Min(0)
+	@Max(50)
+	private Integer size = 10;
 
 }

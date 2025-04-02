@@ -16,13 +16,11 @@ import com.tbass.conquier.utility.PaginationUtils;
 @Service
 public class ClientServiceImpl implements ClientService {
 
-
 	@Autowired
 	private ClientRepository clientRepository;
 
 	@Autowired
 	private ClientMapper clientMapper;
-
 
 	@Override
 	public ClientDto save(ClientDto client) {
@@ -31,7 +29,6 @@ public class ClientServiceImpl implements ClientService {
 		return clientMapper.toDto(clientRepository.save(entity));
 	}
 
-
 	@Override
 	public void delete(long id) {
 		clientRepository.deleteById(id);
@@ -39,24 +36,21 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public ClientDto getById(long id) {
-		 Client clientEntity = clientRepository.getReferenceById(id);
+		Client clientEntity = clientRepository.getReferenceById(id);
 		return clientMapper.toDto(clientEntity);
 	}
-
 
 	@Override
 	public ClientsResponseDto getClients(PaginationDto pagination) {
 
-		  PageRequest pageable = PaginationUtils.getPageable(pagination);
-          Page<Client> entities = clientRepository.findAll(pageable);
+		PageRequest pageable = PaginationUtils.getPageable(pagination);
+		Page<Client> clientEntities = clientRepository.findAll(pageable);
 
-          ClientsResponseDto clients = new ClientsResponseDto();
-			if (entities != null) {
-				clients.setClients(entities.toList());
-				clients.setTotals(entities.getNumber());
+		ClientsResponseDto clients = new ClientsResponseDto();
+		clients.setClients(clientEntities.toList());
+		clients.setTotals(clientEntities.getNumberOfElements());
 
-			}
-          return clients;
+		return clients;
 
 	}
 
@@ -66,7 +60,5 @@ public class ClientServiceImpl implements ClientService {
 		Client entity = clientMapper.toEntity(client);
 		return clientMapper.toDto(clientRepository.save(entity));
 	}
-
-
 
 }
