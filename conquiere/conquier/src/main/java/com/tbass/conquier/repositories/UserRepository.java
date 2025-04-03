@@ -6,4 +6,6 @@ import com.tbass.conquier.entity.UserEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
+	UserEntity findByEmail(String email);
+
 }

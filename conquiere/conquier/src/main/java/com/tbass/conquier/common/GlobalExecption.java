@@ -17,9 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GlobalExecption {
 
-	private static String NOT_VALID_EXCEPTION = "ERREUR DE VALIDATION - ";
-	private static String NO_RESOURCE_FOUND_EXCEPTION = "AUCUNE RESSOURCE TROUVE - ";
-	private static String GENERIC_EXCEPTION = "ERREUR GENERICQUE - ";
+	private static String NOT_VALID_EXCEPTION = "ERREUR DE VALIDATION ";
+	private static String NO_RESOURCE_FOUND_EXCEPTION = "AUCUNE RESSOURCE TROUVE ";
+	private static String GENERIC_EXCEPTION = "ERREUR GENERICQUE ";
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
