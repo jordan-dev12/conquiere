@@ -2,7 +2,7 @@ package com.tbass.conquier.enums;
 
 public enum Role {
 
-	USER("ROLE_USER"), ADMIN("ROLE_ADMIN");
+	USER("USER"), ADMIN("ADMIN");
 
 	private String value;
 

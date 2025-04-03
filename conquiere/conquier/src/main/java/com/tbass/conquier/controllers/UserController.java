@@ -43,7 +43,6 @@ public class UserController {
 	@Operation(summary = "Créer un utilisateur", description = "Crée un nouvel utilisateur dans le système", responses = {
 			@ApiResponse(responseCode = "200", description = "Utilisateur créé avec succès", content = @Content(schema = @Schema(implementation = UserRegistrationResponseDto.class))),
 			@ApiResponse(responseCode = "400", description = "Données d'utilisateur invalides", content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
-			@ApiResponse(responseCode = "409", description = "Un utilisateur avec cet email existe déjà", content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ProblemDetail.class))) })
 	public UserRegistrationResponseDto save(@RequestBody @Valid UserRegistrationRequestDto request) {
 		return userService.save(request);
@@ -73,7 +72,6 @@ public class UserController {
 	@Operation(summary = "Supprimer un utilisateur", description = "Supprime un utilisateur du système", responses = {
 			@ApiResponse(responseCode = "204", description = "Utilisateur supprimé avec succès"),
 			@ApiResponse(responseCode = "404", description = "Utilisateur non trouvé", content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
-			@ApiResponse(responseCode = "403", description = "Opération non autorisée", content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ProblemDetail.class))) })
 	public void deleteById(@PathVariable @Positive Long id) {
 		userService.delete(id);

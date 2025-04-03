@@ -1,15 +1,9 @@
 package com.tbass.conquier.service;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +18,7 @@ import com.tbass.conquier.repositories.UserRepository;
 import com.tbass.conquier.utility.PaginationUtils;
 
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
 
@@ -76,17 +70,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 		UserEntity entity = userMapper.toEntity(user);
 		return userMapper.toDto(userRepository.save(entity));
-	}
-
-	@Override
-	public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
-
-		UserEntity userEntity = userRepository.findByEmail(mail);
-		if (userEntity == null) {
-			throw new UsernameNotFoundException(mail);
-		}
-		return new User(userEntity.getEmail(), userEntity.getPassword(), userEntity.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role)).collect(Collectors.toList()));
-
 	}
 
 	private void addRole(UserEntity userEntity, String role) {

@@ -4,6 +4,7 @@ import java.time.Instant;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -20,6 +21,7 @@ public class GlobalExecption {
 	private static String NOT_VALID_EXCEPTION = "ERREUR DE VALIDATION ";
 	private static String NO_RESOURCE_FOUND_EXCEPTION = "AUCUNE RESSOURCE TROUVE ";
 	private static String GENERIC_EXCEPTION = "ERREUR GENERICQUE ";
+	private static String UNAUTHORIZED = "UNAUTHORIZED";
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
@@ -41,8 +43,13 @@ public class GlobalExecption {
 		return getErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR, ex, request, GENERIC_EXCEPTION);
 	}
 
-	private ProblemDetail getErrorMessage(HttpStatus httpStatus, Exception ex, WebRequest request,
-			String errorMessage) {
+	@ExceptionHandler(BadCredentialsException.class)
+	@ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+	public ProblemDetail handleBadCredentialsException(Exception ex, WebRequest request) {
+		return getErrorMessage(HttpStatus.UNAUTHORIZED, ex, request, UNAUTHORIZED);
+	}
+
+	private ProblemDetail getErrorMessage(HttpStatus httpStatus, Exception ex, WebRequest request, String errorMessage) {
 		log.error(errorMessage + ex.getMessage(), ex);
 
 		ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(httpStatus, ex.getMessage());
