@@ -2,8 +2,6 @@ package com.tbass.conquier.dtos;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,7 +31,6 @@ public class UserRegistrationRequestDto {
 
 	@NotNull(message = "la date d'anniversaire est obbligatoire")
 	@Schema(description = "Date d'anniversaire", example = "10-02-1991")
-	@JsonFormat(pattern = "dd-MM-yyyy")
 	private LocalDate birthdate;
 
 }

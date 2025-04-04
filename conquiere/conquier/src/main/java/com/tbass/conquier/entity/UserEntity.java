@@ -3,7 +3,11 @@ package com.tbass.conquier.entity;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -13,6 +17,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,7 +31,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "users")
+@Table(name = "USERS")
 public class UserEntity {
 
 	@Id
@@ -50,5 +57,12 @@ public class UserEntity {
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
 	private Collection<String> roles = new ArrayList<>();
+
+	@OneToMany(mappedBy = "creator", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<TournamentEntity> createdTournaments = new ArrayList<>();
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "users_tournament_participations", joinColumns = @JoinColumn(name = "admin_id"), inverseJoinColumns = @JoinColumn(name = "tournament_id"))
+	private Set<TournamentEntity> participatingTournaments = new HashSet<>();
 
 }

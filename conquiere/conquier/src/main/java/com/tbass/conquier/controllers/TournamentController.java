@@ -1,0 +1,57 @@
+package com.tbass.conquier.controllers;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.tbass.conquier.dtos.TournamentRequestDto;
+import com.tbass.conquier.dtos.TournamentResponseDto;
+import com.tbass.conquier.service.TournamentService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
+
+@RestController
+@RequestMapping("/api/admin")
+@Tag(name = "Tournois", description = "API pour la gestion des tournois")
+public class TournamentController {
+
+	private final TournamentService tournamentService;
+
+	public TournamentController(TournamentService tournamentService) {
+		this.tournamentService = tournamentService;
+	}
+
+	@PostMapping(value = "/createTournament")
+	@ResponseStatus(HttpStatus.CREATED)
+	@Operation(summary = "Créer un nouveau tournoi", description = "Crée un nouveau tournoi avec les informations fournies. Seuls les administrateurs peuvent créer des tournois.")
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Tournoi créé avec succès", content = @Content(schema = @Schema(implementation = TournamentResponseDto.class))),
+			@ApiResponse(responseCode = "400", description = "Données de tournoi invalides"),
+			@ApiResponse(responseCode = "403", description = "Accès refusé - L'utilisateur n'est pas un administrateur"),
+			@ApiResponse(responseCode = "404", description = "Utilisateur créateur non trouvé") })
+	public TournamentResponseDto create(@RequestBody @Valid TournamentRequestDto request) {
+		return tournamentService.create(request);
+	}
+
+	@Operation(summary = "Récupérer un tournoi par son ID", description = "Récupère les détails complets d'un tournoi")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Tournoi trouvé", content = @Content(schema = @Schema(implementation = TournamentResponseDto.class))),
+			@ApiResponse(responseCode = "404", description = "Tournoi non trouvé") })
+	@GetMapping("/getTournament/{id}")
+	public TournamentResponseDto getTournamentById(@Positive @PathVariable Long id) {
+
+		TournamentResponseDto tournament = tournamentService.getById(id);
+		return tournament;
+	}
+
+}

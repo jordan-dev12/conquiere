@@ -2,8 +2,10 @@ package com.tbass.conquier.common;
 
 import java.time.Instant;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,16 +14,19 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice
 @Slf4j
 public class GlobalExecption {
 
-	private static String NOT_VALID_EXCEPTION = "ERREUR DE VALIDATION ";
-	private static String NO_RESOURCE_FOUND_EXCEPTION = "AUCUNE RESSOURCE TROUVE ";
-	private static String GENERIC_EXCEPTION = "ERREUR GENERICQUE ";
-	private static String UNAUTHORIZED = "UNAUTHORIZED";
+	private static String NOT_VALID_EXCEPTION = "ERREUR DE VALIDATION";
+	private static String NO_RESOURCE_FOUND_EXCEPTION = "AUCUNE RESSOURCE TROUVE";
+	private static String GENERIC_EXCEPTION = "ERREUR GENERICQUE";
+	private static String UNAUTHORIZED = "NON AUTHORISER";
+	private static String ACCESS_DENIED = "ACCESS DENIED";
+	private static String CONFLICT = "VIOLATION D'INTEGRITE";
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
@@ -35,6 +40,25 @@ public class GlobalExecption {
 	public ProblemDetail handleNoResourceFoundException(NoResourceFoundException ex, WebRequest request) {
 		return getErrorMessage(HttpStatus.NOT_FOUND, ex, request, NO_RESOURCE_FOUND_EXCEPTION);
 
+	}
+
+	@ExceptionHandler(AccessDeniedException.class)
+	@ResponseStatus(value = HttpStatus.FORBIDDEN)
+	public ProblemDetail handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
+		return getErrorMessage(HttpStatus.FORBIDDEN, ex, request, ACCESS_DENIED);
+
+	}
+
+	@ExceptionHandler(EntityNotFoundException.class)
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	public ProblemDetail handleEntityNotFoundException(EntityNotFoundException ex, WebRequest request) {
+		return getErrorMessage(HttpStatus.NOT_FOUND, ex, request, NO_RESOURCE_FOUND_EXCEPTION);
+	}
+
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	@ResponseStatus(value = HttpStatus.CONFLICT)
+	public ProblemDetail handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
+		return getErrorMessage(HttpStatus.CONFLICT, ex, request, CONFLICT);
 	}
 
 	@ExceptionHandler(Exception.class)

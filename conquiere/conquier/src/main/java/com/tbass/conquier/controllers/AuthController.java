@@ -1,6 +1,5 @@
 package com.tbass.conquier.controllers;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tbass.conquier.dtos.AuthRequestDto;
@@ -40,10 +38,9 @@ public class AuthController {
 	}
 
 	@PostMapping("/auth")
-	@ResponseStatus(HttpStatus.OK)
 	@Operation(summary = "Authentification  d'un utilisateur", description = "Permet d'authentifier un utilisateur dans le système", responses = {
 			@ApiResponse(responseCode = "200", description = "Utilisateur authentifier avec succès", content = @Content(schema = @Schema(implementation = AuthResponseDto.class))),
-			@ApiResponse(responseCode = "401", description = "Credentials invalides", content = @Content(schema = @Schema(implementation = BadCredentialsException.class))),
+			@ApiResponse(responseCode = "401", description = "Credentials invalides", content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ProblemDetail.class))) })
 	public AuthResponseDto createAuthenticationToken(@RequestBody AuthRequestDto auth) throws Exception {
 

@@ -39,17 +39,16 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/register")
-	@ResponseStatus(HttpStatus.OK)
+	@ResponseStatus(HttpStatus.CREATED)
 	@Operation(summary = "Créer un utilisateur", description = "Crée un nouvel utilisateur dans le système", responses = {
-			@ApiResponse(responseCode = "200", description = "Utilisateur créé avec succès", content = @Content(schema = @Schema(implementation = UserRegistrationResponseDto.class))),
+			@ApiResponse(responseCode = "201", description = "Utilisateur créé avec succès", content = @Content(schema = @Schema(implementation = UserRegistrationResponseDto.class))),
 			@ApiResponse(responseCode = "400", description = "Données d'utilisateur invalides", content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ProblemDetail.class))) })
-	public UserRegistrationResponseDto save(@RequestBody @Valid UserRegistrationRequestDto request) {
-		return userService.save(request);
+	public UserRegistrationResponseDto register(@RequestBody @Valid UserRegistrationRequestDto request) {
+		return userService.registerUsers(request);
 	}
 
 	@PostMapping(value = "/all")
-	@ResponseStatus(HttpStatus.OK)
 	@Operation(summary = "Lister tous les utilisateurs", description = "Récupère la liste de tous les utilisateurs avec pagination", responses = {
 			@ApiResponse(responseCode = "200", description = "Liste des utilisateurs récupérée avec succès", content = @Content(schema = @Schema(implementation = UsersResponseDto.class))),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ProblemDetail.class))) })
@@ -58,7 +57,6 @@ public class UserController {
 	}
 
 	@GetMapping(value = "/get/{id}")
-	@ResponseStatus(HttpStatus.OK)
 	@Operation(summary = "Récupérer un utilisateur par ID", description = "Retourne un utilisateur en fonction de son identifiant", responses = {
 			@ApiResponse(responseCode = "200", description = "Utilisateur trouvé", content = @Content(schema = @Schema(implementation = UserRegistrationResponseDto.class))),
 			@ApiResponse(responseCode = "404", description = "Utilisateur non trouvé", content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
@@ -68,7 +66,7 @@ public class UserController {
 	}
 
 	@DeleteMapping("/delete/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	@Operation(summary = "Supprimer un utilisateur", description = "Supprime un utilisateur du système", responses = {
 			@ApiResponse(responseCode = "204", description = "Utilisateur supprimé avec succès"),
 			@ApiResponse(responseCode = "404", description = "Utilisateur non trouvé", content = @Content(schema = @Schema(implementation = ProblemDetail.class))),

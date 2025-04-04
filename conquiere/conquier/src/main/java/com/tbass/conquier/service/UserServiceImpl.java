@@ -17,6 +17,8 @@ import com.tbass.conquier.mappers.UserMapper;
 import com.tbass.conquier.repositories.UserRepository;
 import com.tbass.conquier.utility.PaginationUtils;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -33,7 +35,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserRegistrationResponseDto save(UserRegistrationRequestDto client) {
+	public UserRegistrationResponseDto registerUsers(UserRegistrationRequestDto client) {
 
 		UserEntity userEntity = userMapper.toEntity(client);
 		userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
@@ -48,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserRegistrationResponseDto getById(long id) {
-		UserEntity userEntity = userRepository.getReferenceById(id);
+		UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Utilisateur non trouvé avec l'ID: " + id));
 		return userMapper.toDto(userEntity);
 	}
 

@@ -7,7 +7,7 @@ import com.tbass.conquier.dtos.UsersResponseDto;
 
 public interface UserService {
 
-	public UserRegistrationResponseDto save(UserRegistrationRequestDto user);
+	public UserRegistrationResponseDto registerUsers(UserRegistrationRequestDto user);
 
 	public UserRegistrationResponseDto update(UserRegistrationRequestDto user);
 
