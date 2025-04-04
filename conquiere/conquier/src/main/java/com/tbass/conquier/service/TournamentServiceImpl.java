@@ -39,7 +39,7 @@ public class TournamentServiceImpl implements TournamentService {
 
 		TournamentEntity tournamentEntityResponse = tournamentRepository.save(tournamentEntityRequest);
 		TournamentResponseDto response = tournamentMapper.toDto(tournamentEntityResponse);
-		response.setAdminId(response.getAdminId());
+		response.setAdminId(tournamentEntityResponse.getCreator().getId());
 		return response;
 	}
 
@@ -48,7 +48,7 @@ public class TournamentServiceImpl implements TournamentService {
 
 		TournamentEntity tournamentEntityResponse = tournamentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Tournoir non trouvé avec l'ID: " + id));
 		TournamentResponseDto response = tournamentMapper.toDto(tournamentEntityResponse);
-		response.setAdminId(response.getAdminId());
+		response.setAdminId(tournamentEntityResponse.getCreator().getId());
 		return response;
 	}
 

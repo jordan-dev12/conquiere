@@ -19,6 +19,6 @@ public class TournamentResponseDto {
 
 	private LocalDate eventDate;
 
-	private long adminId;
+	private Long adminId;
 
 }

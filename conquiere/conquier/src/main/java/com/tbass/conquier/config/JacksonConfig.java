@@ -12,12 +12,14 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 @Configuration
 public class JacksonConfig {
 
+	private static final String FORMATTER = "dd-MM-yyyy";
+
 	@Bean
-	public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
+	protected Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
 		return builder -> {
-			builder.simpleDateFormat("dd-MM-yyyy");
-			builder.serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-			builder.deserializers(new LocalDateDeserializer(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+			builder.simpleDateFormat(FORMATTER);
+			builder.serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern(FORMATTER)));
+			builder.deserializers(new LocalDateDeserializer(DateTimeFormatter.ofPattern(FORMATTER)));
 		};
 	}
 
