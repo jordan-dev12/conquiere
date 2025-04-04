@@ -62,7 +62,7 @@ public class UserEntity {
 	private List<TournamentEntity> createdTournaments = new ArrayList<>();
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "users_tournament_participations", joinColumns = @JoinColumn(name = "admin_id"), inverseJoinColumns = @JoinColumn(name = "tournament_id"))
+	@JoinTable(name = "users_tournament_participations", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "tournament_id"))
 	private Set<TournamentEntity> participatingTournaments = new HashSet<>();
 
 }

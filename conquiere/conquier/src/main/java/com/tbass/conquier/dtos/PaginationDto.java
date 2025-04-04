@@ -15,7 +15,7 @@ public class PaginationDto {
 	@Schema(description = "Numéro de la page courante (commence à 0)", example = "0")
 	private Integer page = 0;
 
-	@Min(0)
+	@Min(1)
 	@Max(50)
 	@Schema(description = "Taille de la page", example = "20")
 	private Integer size = 10;

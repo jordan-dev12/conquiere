@@ -69,7 +69,7 @@ public class GlobalExecption {
 
 	@ExceptionHandler(BadCredentialsException.class)
 	@ResponseStatus(value = HttpStatus.UNAUTHORIZED)
-	public ProblemDetail handleBadCredentialsException(Exception ex, WebRequest request) {
+	public ProblemDetail handleBadCredentialsException(BadCredentialsException ex, WebRequest request) {
 		return getErrorMessage(HttpStatus.UNAUTHORIZED, ex, request, UNAUTHORIZED);
 	}
 
