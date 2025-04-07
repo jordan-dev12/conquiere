@@ -28,8 +28,4 @@ public class TournamentRequestDto {
 	@NotNull(message = "la date de déroulement du tournoi est obligatoire")
 	private LocalDate eventDate;
 
-	@Schema(description = "ID de l'administrateur qui cree le tournoi", example = "1")
-	@NotNull(message = "ID de l'administrateur qui cree le tournoi est obligatoire")
-	private Long adminId;
-
 }

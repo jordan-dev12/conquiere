@@ -5,7 +5,7 @@ import com.tbass.conquier.dtos.TournamentResponseDto;
 
 public interface TournamentService {
 
-	public TournamentResponseDto create(TournamentRequestDto tournament);
+	public TournamentResponseDto create(TournamentRequestDto tournament, String usernameAdmin);
 
 	public TournamentResponseDto getById(long id);
 

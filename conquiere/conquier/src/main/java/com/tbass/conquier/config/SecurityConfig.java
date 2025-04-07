@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -14,15 +15,14 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.tbass.conquier.security.AuthTokenFilter;
-import com.tbass.conquier.security.JwtUtil;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
-	
-	
+
 	private final AuthTokenFilter authTokenFilter;
-	
+
 	public SecurityConfig(AuthTokenFilter authTokenFilter) {
 		this.authTokenFilter = authTokenFilter;
 	}
@@ -31,7 +31,7 @@ public class SecurityConfig {
 	protected PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder(12);
 	}
-	
+
 	@Bean
 	protected AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) throws Exception {
 
@@ -40,18 +40,15 @@ public class SecurityConfig {
 
 	@Bean
 	protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
-		http.csrf(csrf -> csrf.disable()) 
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/api/register").permitAll()
-				.requestMatchers("/v3/api-docs/**","/swagger-ui/**","/swagger-ui.html").permitAll()
+		http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(
+				auth -> auth.requestMatchers("/api/register").permitAll()
+				.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
 				.requestMatchers("/api/auth").permitAll()
-				.requestMatchers("/api/admin/**").hasRole("ADMIN")
-				.requestMatchers("/api/user/**").hasRole("USER")
-//				.anyRequest().permitAll()) Decommenter pour les test
-				.anyRequest().authenticated())  
-//				.formLogin(form -> form.loginPage("/login").permitAll())
-				.logout(logout -> logout.permitAll())
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-		        http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
+				.requestMatchers("/h2-console/**","/tournamentdb/**").permitAll()
+				.anyRequest().authenticated())
+				.logout(logout -> logout.permitAll()).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+		http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
+		http.headers(header -> header.frameOptions(f -> f.sameOrigin()));
 		return http.build();
 	}
 }

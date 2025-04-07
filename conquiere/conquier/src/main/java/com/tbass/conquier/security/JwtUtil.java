@@ -32,10 +32,6 @@ public class JwtUtil {
 	@Value("${jwt.jwtExpirationInMs}")
 	private int jwtExpirationInMs;
 
-//	public String getUsernameFromToken(final String token) {
-//		return getClaimFromToken(token, Claims::getSubject);
-//	}
-
 	public String getUsernameFromToken(final String token) {
 		Object claimFromToken = getClaimFromToken(token, body -> body.get(USERNAME));
 		return (String) claimFromToken;

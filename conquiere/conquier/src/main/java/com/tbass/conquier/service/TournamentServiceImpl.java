@@ -1,6 +1,5 @@
 package com.tbass.conquier.service;
 
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import com.tbass.conquier.dtos.TournamentRequestDto;
@@ -27,12 +26,8 @@ public class TournamentServiceImpl implements TournamentService {
 	}
 
 	@Override
-	public TournamentResponseDto create(TournamentRequestDto tournament) {
-		UserEntity creator = userRepository.findById(tournament.getAdminId()).orElseThrow(() -> new EntityNotFoundException("Utilisateur non trouvé avec l'ID: " + tournament.getAdminId()));
-
-		if (!hasAdminRole(creator)) {
-			throw new AccessDeniedException("Seuls les administrateurs peuvent créer des tournois");
-		}
+	public TournamentResponseDto create(TournamentRequestDto tournament, String username) {
+		UserEntity creator = userRepository.findByEmail(username).orElseThrow(() -> new EntityNotFoundException("Utilisateur non trouvé avec l'username: " + username));
 
 		TournamentEntity tournamentEntityRequest = tournamentMapper.toEntity(tournament);
 		tournamentEntityRequest.setCreator(creator);
@@ -50,10 +45,6 @@ public class TournamentServiceImpl implements TournamentService {
 		TournamentResponseDto response = tournamentMapper.toDto(tournamentEntityResponse);
 		response.setAdminId(tournamentEntityResponse.getCreator().getId());
 		return response;
-	}
-
-	private boolean hasAdminRole(UserEntity user) {
-		return user.getRoles().contains("ADMIN");
 	}
 
 }
