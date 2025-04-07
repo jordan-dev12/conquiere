@@ -22,11 +22,11 @@ public interface TournamentMapper {
 
 	@Mapping(target = "name", source = "dto.name")
 	@Mapping(target = "description", source = "dto.description")
-	@Mapping(target = "dateIssued", source = "dto.dateIssued")
 	@Mapping(target = "eventDate", source = "dto.eventDate")
 	@Mapping(target = "creator", ignore = true)
 	@Mapping(target = "participants", ignore = true)
 	@Mapping(target = "id", ignore = true)
+	@Mapping(target = "dateIssued", ignore = true)
 	TournamentEntity toEntity(TournamentRequestDto dto);
 
 }

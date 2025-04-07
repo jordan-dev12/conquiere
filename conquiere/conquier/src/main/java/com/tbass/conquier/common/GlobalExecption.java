@@ -27,6 +27,7 @@ public class GlobalExecption {
 	private static String UNAUTHORIZED = "NON AUTHORISER ";
 	private static String ACCESS_DENIED = "ACCESS DENIED ";
 	private static String CONFLICT = "VIOLATION D'INTEGRITE ";
+	private static String BAD_REQUEST = "BAD REQUEST ";
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
@@ -53,6 +54,12 @@ public class GlobalExecption {
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	public ProblemDetail handleEntityNotFoundException(EntityNotFoundException ex, WebRequest request) {
 		return getErrorMessage(HttpStatus.NOT_FOUND, ex, request, NO_RESOURCE_FOUND_EXCEPTION);
+	}
+
+	@ExceptionHandler(IllegalArgumentException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	public ProblemDetail handleEntityNotFoundException(IllegalArgumentException ex, WebRequest request) {
+		return getErrorMessage(HttpStatus.BAD_REQUEST, ex, request, BAD_REQUEST);
 	}
 
 	@ExceptionHandler(DataIntegrityViolationException.class)

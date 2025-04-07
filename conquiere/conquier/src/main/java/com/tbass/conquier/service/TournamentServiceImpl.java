@@ -1,5 +1,7 @@
 package com.tbass.conquier.service;
 
+import java.time.LocalDate;
+
 import org.springframework.stereotype.Service;
 
 import com.tbass.conquier.dtos.TournamentRequestDto;
@@ -11,27 +13,28 @@ import com.tbass.conquier.repositories.TournamentRepository;
 import com.tbass.conquier.repositories.UserRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class TournamentServiceImpl implements TournamentService {
 
 	private final TournamentRepository tournamentRepository;
 	private final UserRepository userRepository;
 	private final TournamentMapper tournamentMapper;
 
-	public TournamentServiceImpl(TournamentRepository tournamentRepository, UserRepository uersRepository, TournamentMapper tournamentMapper) {
-		this.tournamentRepository = tournamentRepository;
-		this.userRepository = uersRepository;
-		this.tournamentMapper = tournamentMapper;
-	}
-
 	@Override
-	public TournamentResponseDto create(TournamentRequestDto tournament, String username) {
+	public TournamentResponseDto create(TournamentRequestDto tournamentRequestDto, String username) {
 		UserEntity creator = userRepository.findByEmail(username).orElseThrow(() -> new EntityNotFoundException("Utilisateur non trouvé avec l'username: " + username));
 
-		TournamentEntity tournamentEntityRequest = tournamentMapper.toEntity(tournament);
-		tournamentEntityRequest.setCreator(creator);
+		LocalDate now = LocalDate.now();
+		if (tournamentRequestDto.getEventDate().isBefore(now)) {
+			throw new IllegalArgumentException("La date du tournoi doit être postérieure ou égale à la date d'aujourd'hui");
+		}
 
+		TournamentEntity tournamentEntityRequest = tournamentMapper.toEntity(tournamentRequestDto);
+		tournamentEntityRequest.setCreator(creator);
+		tournamentEntityRequest.setDateIssued(now);
 		TournamentEntity tournamentEntityResponse = tournamentRepository.save(tournamentEntityRequest);
 		TournamentResponseDto response = tournamentMapper.toDto(tournamentEntityResponse);
 		response.setAdminId(tournamentEntityResponse.getCreator().getId());

@@ -16,16 +16,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.tbass.conquier.security.AuthTokenFilter;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
 	private final AuthTokenFilter authTokenFilter;
 
-	public SecurityConfig(AuthTokenFilter authTokenFilter) {
-		this.authTokenFilter = authTokenFilter;
-	}
 
 	@Bean
 	protected PasswordEncoder passwordEncoder() {
@@ -40,7 +40,7 @@ public class SecurityConfig {
 
 	@Bean
 	protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
-		http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(
+		http.csrf(csrf -> csrf.disable()).authorizeHttpRequests( 
 				auth -> auth.requestMatchers("/api/register").permitAll()
 				.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
 				.requestMatchers("/api/auth").permitAll()

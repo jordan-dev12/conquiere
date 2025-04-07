@@ -21,21 +21,17 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api")
 @Tag(name = "Authentification", description = "API de gestion des authentifications")
+@RequiredArgsConstructor
 public class AuthController {
 
 	private final AuthenticationManager authenticationManager;
 	private final UserDetailsService userDetailsService;
 	private final JwtUtil jwtUtil;
-
-	public AuthController(AuthenticationManager authenticationManager, UserDetailsService userDetailsService, JwtUtil jwtUtil) {
-		this.authenticationManager = authenticationManager;
-		this.userDetailsService = userDetailsService;
-		this.jwtUtil = jwtUtil;
-	}
 
 	@PostMapping("/auth")
 	@Operation(summary = "Authentification  d'un utilisateur", description = "Permet d'authentifier un utilisateur dans le système", responses = {

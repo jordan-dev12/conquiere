@@ -20,10 +20,6 @@ public class TournamentRequestDto {
 	@Schema(description = "Description du tournoi", example = "Tournoi d'été")
 	private String description;
 
-	@NotNull(message = "La date de creation du tournoi est obligatoire")
-	@Schema(description = "la date de creation du tournoi", example = "09-06-2025")
-	private LocalDate dateIssued;
-
 	@Schema(description = "la date de déroulement du tournoi", example = "10-06-2025")
 	@NotNull(message = "la date de déroulement du tournoi est obligatoire")
 	private LocalDate eventDate;

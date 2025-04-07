@@ -25,18 +25,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
+import lombok.RequiredArgsConstructor;
 
 @Validated
 @RestController
 @RequestMapping(value = "/api")
 @Tag(name = "Utilisateurs", description = "API de gestion des utilisateurs")
+@RequiredArgsConstructor
 public class UserController {
 
 	private final UserService userService;
-
-	public UserController(UserService userService) {
-		this.userService = userService;
-	}
 
 	@PostMapping(value = "/register")
 	@ResponseStatus(HttpStatus.CREATED)

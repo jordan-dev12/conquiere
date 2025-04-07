@@ -18,8 +18,10 @@ import com.tbass.conquier.repositories.UserRepository;
 import com.tbass.conquier.utility.PaginationUtils;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
@@ -27,12 +29,6 @@ public class UserServiceImpl implements UserService {
 	private final PasswordEncoder passwordEncoder;
 
 	private final UserMapper userMapper;
-
-	public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
-		this.userRepository = userRepository;
-		this.passwordEncoder = passwordEncoder;
-		this.userMapper = userMapper;
-	}
 
 	@Override
 	public UserRegistrationResponseDto registerUsers(UserRegistrationRequestDto client) {

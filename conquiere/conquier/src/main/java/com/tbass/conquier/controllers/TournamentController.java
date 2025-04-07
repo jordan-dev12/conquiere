@@ -24,17 +24,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/admin")
 @Tag(name = "Tournois", description = "API pour la gestion des tournois")
+@RequiredArgsConstructor
+
 public class TournamentController {
 
 	private final TournamentService tournamentService;
-
-	public TournamentController(TournamentService tournamentService) {
-		this.tournamentService = tournamentService;
-	}
 
 	@PostMapping(value = "/createTournament")
 	@ResponseStatus(HttpStatus.CREATED)
@@ -44,10 +43,10 @@ public class TournamentController {
 			@ApiResponse(responseCode = "400", description = "Données de tournoi invalides"),
 			@ApiResponse(responseCode = "403", description = "Accès refusé - L'utilisateur n'est pas un administrateur"),
 			@ApiResponse(responseCode = "404", description = "Utilisateur créateur non trouvé") })
-	public TournamentResponseDto create(@RequestBody @Valid TournamentRequestDto request) {
+	public TournamentResponseDto create(@RequestBody @Valid TournamentRequestDto tournamentDTO) {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		return tournamentService.create(request, authentication.getName());
+		return tournamentService.create(tournamentDTO, authentication.getName());
 	}
 
 	@Operation(summary = "Récupérer un tournoi par son ID", description = "Récupère les détails complets d'un tournoi")
