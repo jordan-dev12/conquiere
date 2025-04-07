@@ -24,17 +24,12 @@ public class TournamentServiceImpl implements TournamentService {
 	private final TournamentMapper tournamentMapper;
 
 	@Override
-	public TournamentResponseDto create(TournamentRequestDto tournamentRequestDto, String username) {
+	public TournamentResponseDto create(TournamentRequestDto tournamentRequestDto, String username, LocalDate currentDate) {
 		UserEntity creator = userRepository.findByEmail(username).orElseThrow(() -> new EntityNotFoundException("Utilisateur non trouvé avec l'username: " + username));
-
-		LocalDate now = LocalDate.now();
-		if (tournamentRequestDto.getEventDate().isBefore(now)) {
-			throw new IllegalArgumentException("La date du tournoi doit être postérieure ou égale à la date d'aujourd'hui");
-		}
 
 		TournamentEntity tournamentEntityRequest = tournamentMapper.toEntity(tournamentRequestDto);
 		tournamentEntityRequest.setCreator(creator);
-		tournamentEntityRequest.setDateIssued(now);
+		tournamentEntityRequest.setDateIssued(currentDate);
 		TournamentEntity tournamentEntityResponse = tournamentRepository.save(tournamentEntityRequest);
 		TournamentResponseDto response = tournamentMapper.toDto(tournamentEntityResponse);
 		response.setAdminId(tournamentEntityResponse.getCreator().getId());

@@ -27,6 +27,8 @@ public interface UserMapper {
 	@Mapping(target = "birthdate", source = "dto.birthdate", dateFormat = "dd-MM-yyyy")
 	@Mapping(target = "roles", ignore = true)
 	@Mapping(target = "id", ignore = true)
+	@Mapping(target = "participatingTournaments", ignore = true)
+	@Mapping(target = "createdTournaments", ignore = true)
 	UserEntity toEntity(UserRegistrationRequestDto dto);
 
 }

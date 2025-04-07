@@ -1,5 +1,7 @@
 package com.tbass.conquier.controllers;
 
+import java.time.LocalDate;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -30,7 +32,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/admin")
 @Tag(name = "Tournois", description = "API pour la gestion des tournois")
 @RequiredArgsConstructor
-
 public class TournamentController {
 
 	private final TournamentService tournamentService;
@@ -45,8 +46,13 @@ public class TournamentController {
 			@ApiResponse(responseCode = "404", description = "Utilisateur créateur non trouvé") })
 	public TournamentResponseDto create(@RequestBody @Valid TournamentRequestDto tournamentDTO) {
 
+		LocalDate currentDate = LocalDate.now();
+		if (tournamentDTO.getEventDate().isBefore(currentDate)) {
+			throw new IllegalArgumentException("La date du tournoi doit être postérieure ou égale à la date d'aujourd'hui");
+		}
+
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		return tournamentService.create(tournamentDTO, authentication.getName());
+		return tournamentService.create(tournamentDTO, authentication.getName(), currentDate);
 	}
 
 	@Operation(summary = "Récupérer un tournoi par son ID", description = "Récupère les détails complets d'un tournoi")
