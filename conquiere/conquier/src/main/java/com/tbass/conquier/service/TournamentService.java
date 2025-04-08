@@ -11,4 +11,6 @@ public interface TournamentService {
 
 	public TournamentResponseDto getById(long id);
 
+	public void deleteAll();
+
 }

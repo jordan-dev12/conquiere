@@ -1,6 +1,6 @@
 package com.tbass.conquier.service;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -70,10 +70,16 @@ public class UserServiceImpl implements UserService {
 		return userMapper.toDto(userRepository.save(entity));
 	}
 
+	@Override
+	public void deleteAll() {
+		this.userRepository.deleteAll();
+	}
+
 	private void addRole(UserEntity userEntity, String role) {
 		if (userEntity.getRoles() == null) {
-			userEntity.setRoles(new ArrayList<>());
+			userEntity.setRoles(new HashSet<>());
 		}
 		userEntity.getRoles().add(role);
 	}
+
 }

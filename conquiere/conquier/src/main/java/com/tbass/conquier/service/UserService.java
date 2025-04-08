@@ -17,4 +17,6 @@ public interface UserService {
 
 	public UsersResponseDto getClients(PaginationDto pagination);
 
+	public void deleteAll();
+
 }

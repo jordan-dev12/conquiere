@@ -45,4 +45,11 @@ public class TournamentServiceImpl implements TournamentService {
 		return response;
 	}
 
+	@Override
+	public void deleteAll() {
+
+		tournamentRepository.deleteAll();
+
+	}
+
 }
