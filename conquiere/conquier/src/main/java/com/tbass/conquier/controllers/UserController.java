@@ -2,6 +2,7 @@ package com.tbass.conquier.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 
@@ -47,6 +50,7 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/all")
+	@PreAuthorize("hasRole('ADMIN')")
 	@Operation(summary = "Lister tous les utilisateurs", description = "Récupère la liste de tous les utilisateurs avec pagination", responses = {
 			@ApiResponse(responseCode = "200", description = "Liste des utilisateurs récupérée avec succès", content = @Content(schema = @Schema(implementation = UsersResponseDto.class))),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ProblemDetail.class))) })
@@ -65,6 +69,7 @@ public class UserController {
 
 	@DeleteMapping("/delete/{id}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasRole('ADMIN')")
 	@Operation(summary = "Supprimer un utilisateur", description = "Supprime un utilisateur du système", responses = {
 			@ApiResponse(responseCode = "204", description = "Utilisateur supprimé avec succès"),
 			@ApiResponse(responseCode = "404", description = "Utilisateur non trouvé", content = @Content(schema = @Schema(implementation = ProblemDetail.class))),

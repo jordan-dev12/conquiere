@@ -40,7 +40,7 @@ public class IdTestHelper {
 		return ids.getOrDefault(type, emptyMap()).get(hint);
 	}
 
-	public Long getUserId(String hint) {
+	public Long getUserIdByEmail(String hint) {
 		return Long.valueOf(Objects.toString(getId(UserEntity.class, hint)));
 	}
 

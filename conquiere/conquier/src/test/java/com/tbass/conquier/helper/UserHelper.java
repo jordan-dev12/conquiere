@@ -26,13 +26,10 @@ public class UserHelper {
 		users().deleteAll();
 		users()
 			.create()
-			.regularUser("user1")
+			.regularUser("Jean")
 			.and()
 			.create()
-			.regularUser("user2")
-			.and()
-			.create()
-			.regularAdmin("admin");
+			.regularUser("admin");
 
 		return this;
 	}

@@ -26,27 +26,38 @@ public class SecurityConfig {
 
 	private final AuthTokenFilter authTokenFilter;
 
-
 	@Bean
 	protected PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder(12);
 	}
 
 	@Bean
-	protected AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) throws Exception {
+	protected AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService)
+			throws Exception {
 
-		return http.getSharedObject(AuthenticationManagerBuilder.class).userDetailsService(userDetailsService).passwordEncoder(passwordEncoder).and().build();
+		return http.getSharedObject(AuthenticationManagerBuilder.class)
+			.userDetailsService(userDetailsService)
+			.passwordEncoder(passwordEncoder)
+			.and()
+			.build();
 	}
 
 	@Bean
 	protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
-		http.csrf(csrf -> csrf.disable()).authorizeHttpRequests( 
-				auth -> auth.requestMatchers("/api/register").permitAll()
-				.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-				.requestMatchers("/api/auth").permitAll()
-				.requestMatchers("/h2-console/**","/tournamentdb/**").permitAll()
-				.anyRequest().authenticated())
-				.logout(logout -> logout.permitAll()).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+		http.csrf(csrf -> csrf.disable())
+			.authorizeHttpRequests(
+					auth -> auth.requestMatchers("/api/user/register")
+						.permitAll()
+						.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
+						.permitAll()
+						.requestMatchers("/api/auth")
+						.permitAll()
+						.requestMatchers("/h2-console/**", "/tournamentdb/**")
+						.permitAll()
+						.anyRequest()
+						.authenticated())
+			.logout(logout -> logout.permitAll())
+			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
 		http.headers(header -> header.frameOptions(f -> f.sameOrigin()));
 		return http.build();

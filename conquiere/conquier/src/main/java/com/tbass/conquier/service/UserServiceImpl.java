@@ -41,12 +41,13 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void delete(long id) {
+		findById(id);
 		userRepository.deleteById(id);
 	}
 
 	@Override
 	public UserRegistrationResponseDto getById(long id) {
-		UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Utilisateur non trouvé avec l'ID: " + id));
+		UserEntity userEntity = findById(id);
 		return userMapper.toDto(userEntity);
 	}
 
@@ -80,6 +81,10 @@ public class UserServiceImpl implements UserService {
 			userEntity.setRoles(new HashSet<>());
 		}
 		userEntity.getRoles().add(role);
+	}
+
+	private UserEntity findById(long id) {
+		return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Utilisateur non trouvé avec l'ID: " + id));
 	}
 
 }

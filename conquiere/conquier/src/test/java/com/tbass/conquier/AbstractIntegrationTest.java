@@ -45,10 +45,6 @@ public abstract class AbstractIntegrationTest {
 	@BeforeEach
 	protected void setup() {
 		idHelper.reset();
-
-		userHelper.defaultDataSet();
-		tournamentHelper.defaultDataSet();
-
 	}
 
 }
