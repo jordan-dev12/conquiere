@@ -44,7 +44,7 @@ public class IdTestHelper {
 		return Long.valueOf(Objects.toString(getId(UserEntity.class, hint)));
 	}
 
-	public Long getTournamentId(String hint) {
+	public Long getTournamentIdByName(String hint) {
 		return Long.valueOf(Objects.toString(getId(TournamentEntity.class, hint)));
 	}
 

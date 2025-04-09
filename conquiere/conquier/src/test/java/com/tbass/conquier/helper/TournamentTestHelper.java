@@ -18,6 +18,7 @@ public class TournamentTestHelper {
 	private final TournamentRepository tournamentRepository;
 	private final UserRepository userRepository;
 	private final IdTestHelper idTestHelper;
+	private final UserHelper userHelper;
 
 	public TournamentsStep tournaments() {
 		return new TournamentsStep();
@@ -26,9 +27,12 @@ public class TournamentTestHelper {
 	public void defaultDataSet() {
 
 		tournaments().deleteAll();
+		userHelper.users().deleteAll();
+
+		userHelper.users().create().regularAdmin("admin");
 		tournaments().create()
-			.name("Tournoi 1")
-			.description("Tournoi 1")
+			.name("Calcio")
+			.description("Tournoi d'été")
 			.save();
 
 	}
