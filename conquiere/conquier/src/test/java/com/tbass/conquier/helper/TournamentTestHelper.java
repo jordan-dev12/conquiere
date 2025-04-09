@@ -18,7 +18,7 @@ public class TournamentTestHelper {
 	private final TournamentRepository tournamentRepository;
 	private final UserRepository userRepository;
 	private final IdTestHelper idTestHelper;
-	private final UserHelper userHelper;
+	private final UserTestHelper userHelper;
 
 	public TournamentsStep tournaments() {
 		return new TournamentsStep();

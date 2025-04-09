@@ -15,13 +15,13 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Component
-public class UserHelper {
+public class UserTestHelper {
 
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final IdTestHelper idTestHelper;
 
-	public UserHelper defaultDataSet() {
+	public UserTestHelper defaultDataSet() {
 
 		users().deleteAll();
 		users()

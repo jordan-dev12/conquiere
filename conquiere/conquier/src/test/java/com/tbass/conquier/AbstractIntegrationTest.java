@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tbass.conquier.helper.IdTestHelper;
 import com.tbass.conquier.helper.TournamentTestHelper;
-import com.tbass.conquier.helper.UserHelper;
+import com.tbass.conquier.helper.UserTestHelper;
 import com.tbass.conquier.service.TournamentService;
 import com.tbass.conquier.service.UserService;
 
@@ -39,7 +39,7 @@ public abstract class AbstractIntegrationTest {
 	protected IdTestHelper idHelper;
 
 	@Autowired
-	protected UserHelper userHelper;
+	protected UserTestHelper userHelper;
 
 	@Autowired
 	protected TournamentTestHelper tournamentHelper;
