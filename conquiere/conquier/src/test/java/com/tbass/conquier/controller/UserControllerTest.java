@@ -74,6 +74,7 @@ public class UserControllerTest extends AbstractIntegrationTest {
 
 			mockMvc.perform(get(BASE_URL + "/get/{id}", userID))
 				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.id").isNotEmpty())
 				.andExpect(jsonPath("$.name", is("Jean")))
 				.andExpect(jsonPath("$.surname", is("Jean")))
 				.andExpect(jsonPath("$.email", is("Jean@user.com")));
@@ -109,6 +110,7 @@ public class UserControllerTest extends AbstractIntegrationTest {
 			mockMvc.perform(post(BASE_URL + "/register").content(objectMapper.writeValueAsString(userRequestDto))
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.id").isNotEmpty())
 				.andExpect(jsonPath("$.email", is("test1@user.com")))
 				.andExpect(jsonPath("$.surname", is("test1")))
 				.andExpect(jsonPath("$.name", is("test1")));

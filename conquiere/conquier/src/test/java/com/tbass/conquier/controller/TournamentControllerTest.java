@@ -37,15 +37,17 @@ public class TournamentControllerTest extends AbstractIntegrationTest {
 	class GetByID {
 
 		@Test
-		@WithMockUser(username = "admin", roles = { "ADMIN" })
 		void found() throws Exception {
-			long tournamentId = idHelper.getTournamentIdByName("Calcio");
+			Long tournamentId = idHelper.getTournamentIdByName("Calcio");
 
 			mockMvc.perform(get(BASE_URL + "/get/{id}", tournamentId))
 				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.id", equalTo(tournamentId.intValue())))
 				.andExpect(jsonPath("$.name", is("Calcio")))
 				.andExpect(jsonPath("$.dateIssued", is(DATE_ISSUE.format(getFormatter()))))
-				.andExpect(jsonPath("$.description", is("Tournoi d'été")));
+				.andExpect(jsonPath("$.eventDate", is(DATE_ISSUE.plusDays(7).format(getFormatter()))))
+				.andExpect(jsonPath("$.description", is("Tournoi d'été")))
+				.andExpect(jsonPath("$.adminId").isNotEmpty());
 
 		}
 
@@ -80,6 +82,7 @@ public class TournamentControllerTest extends AbstractIntegrationTest {
 			mockMvc.perform(post(BASE_URL + "/create").content(objectMapper.writeValueAsString(tournamentRequestDto))
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.id").isNotEmpty())
 				.andExpect(jsonPath("$.name", equalTo("Grand prix")))
 				.andExpect(jsonPath("$.description", equalTo("Premier experience")))
 				.andExpect(jsonPath("$.dateIssued", is(DATE_ISSUE.format(getFormatter()))))
