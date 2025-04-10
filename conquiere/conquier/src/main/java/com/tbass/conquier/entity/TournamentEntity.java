@@ -47,7 +47,7 @@ public class TournamentEntity {
 	@JoinColumn(name = "creator_id", nullable = false)
 	private UserEntity creator;
 
-	@ManyToMany(mappedBy = "participatingTournaments")
+	@ManyToMany(mappedBy = "tournaments")
 	private Set<UserEntity> participants = new HashSet<>();
 
 }

@@ -85,9 +85,9 @@ public class UserControllerTest extends AbstractIntegrationTest {
 		@WithMockUser(username = "user", roles = { "USER" })
 		void noFound() throws Exception {
 
-			mockMvc.perform(get(BASE_URL + "/get/{id}", 15))
+			mockMvc.perform(get(BASE_URL + "/get/{id}", 195))
 				.andExpect(status().isNotFound())
-				.andExpect(jsonPath("$.detail", equalTo("Utilisateur non trouvé avec l'ID: 15")));
+				.andExpect(jsonPath("$.detail", equalTo("Utilisateur non trouvé avec l'ID: 195")));
 
 		}
 

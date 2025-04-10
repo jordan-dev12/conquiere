@@ -4,8 +4,6 @@ import java.time.LocalDate;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tbass.conquier.dtos.TournamentRequestDto;
 import com.tbass.conquier.dtos.TournamentResponseDto;
 import com.tbass.conquier.service.TournamentService;
+import com.tbass.conquier.utility.AuthentificationUtilis;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 public class TournamentController {
 
 	private final TournamentService tournamentService;
+	private final AuthentificationUtilis auth;
 
 	@PostMapping(value = "/create")
 	@ResponseStatus(HttpStatus.CREATED)
@@ -52,8 +52,8 @@ public class TournamentController {
 			throw new IllegalArgumentException("La date du tournoi doit être postérieure ou égale à la date d'aujourd'hui");
 		}
 
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		return tournamentService.create(tournamentDTO, authentication.getName(), currentDate);
+		String username = auth.getCurrentUsername();
+		return tournamentService.create(tournamentDTO, username, currentDate);
 	}
 
 	@Operation(summary = "Récupérer un tournoi par son ID", description = "Récupère les détails complets d'un tournoi")

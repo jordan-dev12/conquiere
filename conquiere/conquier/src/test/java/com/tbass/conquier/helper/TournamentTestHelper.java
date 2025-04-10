@@ -27,8 +27,6 @@ public class TournamentTestHelper {
 	public void defaultDataSet() {
 
 		tournaments().deleteAll();
-		userHelper.users().deleteAll();
-
 		userHelper.users().create().regularAdmin("admin");
 		tournaments().create()
 			.name("Calcio")

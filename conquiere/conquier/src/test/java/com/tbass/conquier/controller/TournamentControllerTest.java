@@ -29,6 +29,7 @@ public class TournamentControllerTest extends AbstractIntegrationTest {
 
 	@BeforeEach
 	public void initTournamentTest() {
+		userHelper.users().deleteAll();
 		tournamentHelper.defaultDataSet();
 	}
 

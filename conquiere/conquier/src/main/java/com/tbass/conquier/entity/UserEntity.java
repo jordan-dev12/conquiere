@@ -62,7 +62,17 @@ public class UserEntity {
 	private List<TournamentEntity> createdTournaments = new ArrayList<>();
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "users_tournament_participations", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "tournament_id"))
-	private Set<TournamentEntity> participatingTournaments = new HashSet<>();
+	@JoinTable(name = "users_tournamenta_participations", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "tournament_id"))
+	private Set<TournamentEntity> tournaments = new HashSet<>();
+
+	public void registerOfTournament(TournamentEntity tournament) {
+		tournaments.add(tournament);
+		tournament.getParticipants().add(this);
+	}
+
+	public void unRegisterOfTournament(TournamentEntity tournament) {
+		tournaments.remove(tournament);
+		tournament.getParticipants().remove(this);
+	}
 
 }
