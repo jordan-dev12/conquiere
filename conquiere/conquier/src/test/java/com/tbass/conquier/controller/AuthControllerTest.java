@@ -1,7 +1,6 @@
 package com.tbass.conquier.controller;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -20,7 +19,7 @@ import com.tbass.conquier.dtos.AuthRequestDto;
 public class AuthControllerTest extends AbstractIntegrationTest {
 
 	private final String BASE_URL = "/api/auth";
- 
+
 	@BeforeEach
 	protected void initUser() {
 		userHelper.defaultDataSet();
@@ -36,7 +35,8 @@ public class AuthControllerTest extends AbstractIntegrationTest {
 			AuthRequestDto authRequest = new AuthRequestDto("Jean@user.com", "password123");
 
 			mockMvc
-				.perform(post(BASE_URL + "/autentification").content(objectMapper.writeValueAsString(authRequest)).contentType(MediaType.APPLICATION_JSON))
+				.perform(post(BASE_URL + "/autentification").content(objectMapper.writeValueAsString(authRequest))
+					.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.jwtToken").isNotEmpty());
 
@@ -48,9 +48,24 @@ public class AuthControllerTest extends AbstractIntegrationTest {
 			AuthRequestDto authRequest = new AuthRequestDto("Jean@user.com", "password123adas");
 
 			mockMvc
-				.perform(post(BASE_URL + "/autentification").content(objectMapper.writeValueAsString(authRequest)).contentType(MediaType.APPLICATION_JSON))
+				.perform(post(BASE_URL + "/autentification").content(objectMapper.writeValueAsString(authRequest))
+					.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnauthorized())
-				.andExpect(jsonPath("$.detail",equalTo("INVALID_CREDENTIALS")));
+				.andExpect(jsonPath("$.detail", equalTo("INVALID_CREDENTIALS")));
+
+		}
+
+		@Test
+		void userInvalid() throws Exception {
+
+			userHelper.users().deleteAll();
+			AuthRequestDto authRequest = new AuthRequestDto("Jean@user.com", "password123");
+
+			mockMvc
+				.perform(post(BASE_URL + "/autentification").content(objectMapper.writeValueAsString(authRequest))
+					.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isUnauthorized())
+				.andExpect(jsonPath("$.detail", equalTo("INVALID_CREDENTIALS")));
 
 		}
 

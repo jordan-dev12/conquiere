@@ -137,9 +137,9 @@ public class UserControllerTest extends AbstractIntegrationTest {
 		@WithMockUser(username = "admin", roles = { "ADMIN" })
 		void noUserDelete() throws Exception {
 
-			mockMvc.perform(delete(BASE_URL + "/delete/20"))
+			mockMvc.perform(delete(BASE_URL + "/delete/2000"))
 				.andExpect(status().isNotFound())
-				.andExpect(jsonPath("$.detail", equalTo("Utilisateur non trouvé avec l'ID: 20")));
+				.andExpect(jsonPath("$.detail", equalTo("Utilisateur non trouvé avec l'ID: 2000")));
 
 		}
 
