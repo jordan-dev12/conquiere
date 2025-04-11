@@ -52,6 +52,19 @@ public class RegistrationOfTournamentControllerTest extends AbstractIntegrationT
 
 		}
 
+		@Test
+		void duplicateRegistration() throws Exception {
+
+			Long tournamentId = idHelper.getTournamentIdByName("Calcio");
+
+			mockMvc.perform(post(BASE_URL + "/register/{id}", tournamentId));
+
+			mockMvc.perform(post(BASE_URL + "/register/{id}", tournamentId))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.detail", equalTo("L'utilisateur est déjà inscrit à ce tournoi.")));
+
+		}
+
 	}
 
 	@Nested
@@ -63,8 +76,7 @@ public class RegistrationOfTournamentControllerTest extends AbstractIntegrationT
 		void UnregisterOk() throws Exception {
 			Long tournamentId = idHelper.getTournamentIdByName("Calcio");
 
-			mockMvc.perform(post(BASE_URL + "/register/{id}", tournamentId))
-				.andExpect(status().isOk());
+			mockMvc.perform(post(BASE_URL + "/register/{id}", tournamentId));
 
 			mockMvc.perform(delete(BASE_URL + "/unregister/{id}", tournamentId))
 				.andExpect(status().isNoContent())
@@ -73,12 +85,12 @@ public class RegistrationOfTournamentControllerTest extends AbstractIntegrationT
 		}
 
 		@Test
-		void noFoundTournoiOfUser() throws Exception {
+		void noFoundUserOfTournament() throws Exception {
 			Long tournamentId = idHelper.getTournamentIdByName("Calcio");
 
 			mockMvc.perform(delete(BASE_URL + "/unregister/{id}", tournamentId))
-				.andExpect(status().isNoContent())
-				.andExpect(jsonPath("$.message", equalTo("Utilisateur bien désinscrire du tournoi")));
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.detail", equalTo("L'utilisateur n'est pas inscrit à ce tournoi.")));
 
 		}
 

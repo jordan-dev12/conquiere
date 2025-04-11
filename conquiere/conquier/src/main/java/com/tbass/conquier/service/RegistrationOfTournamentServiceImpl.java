@@ -1,11 +1,16 @@
 package com.tbass.conquier.service;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tbass.conquier.dtos.RegistrationOfTournaResponseDto;
 import com.tbass.conquier.dtos.RegistrationOfTournamentRequestDto;
+import com.tbass.conquier.entity.RegistrationOfTournamentEntity;
 import com.tbass.conquier.entity.TournamentEntity;
 import com.tbass.conquier.entity.UserEntity;
+import com.tbass.conquier.repositories.RegistrationOfTournamentRepository;
 import com.tbass.conquier.repositories.TournamentRepository;
 import com.tbass.conquier.repositories.UserRepository;
 
@@ -18,30 +23,45 @@ public class RegistrationOfTournamentServiceImpl implements RegistrationOfTourna
 
 	private final UserRepository userRepository;
 	private final TournamentRepository tournamentRepository;
+	private final RegistrationOfTournamentRepository registrationRepository;
 
 	@Override
+	@Transactional
 	public RegistrationOfTournaResponseDto register(RegistrationOfTournamentRequestDto registrationRequest) {
 
 		long tournamentId = registrationRequest.getTournamentId();
 		UserEntity userEntity = findUserByUsername(registrationRequest.getUsername());
 		TournamentEntity tournamentEntity = findTournamentById(tournamentId);
 
-		userEntity.registerOfTournament(tournamentEntity);
-		userRepository.save(userEntity);
+		if (registrationRepository.existsByUserIdAndTournamentId(userEntity.getId(), tournamentEntity.getId())) {
+			throw new IllegalArgumentException("L'utilisateur est déjà inscrit à ce tournoi.");
+		}
+
+		RegistrationOfTournamentEntity registrationEntity = new RegistrationOfTournamentEntity();
+		registrationEntity.setUser(userEntity);
+		registrationEntity.setTournament(tournamentEntity);
+		registrationEntity.setRegistrationDate(LocalDateTime.now());
+
+		registrationRepository.save(registrationEntity);
 
 		return RegistrationOfTournaResponseDto.builder().message("Utilisateur bien inscrit au tournoi").build();
 	}
 
 	@Override
+	@Transactional
 	public RegistrationOfTournaResponseDto unRegister(RegistrationOfTournamentRequestDto registrationRequest) {
 
 		long tournamentId = registrationRequest.getTournamentId();
 		UserEntity userEntity = findUserByUsername(registrationRequest.getUsername());
 		TournamentEntity tournamentEntity = findTournamentById(tournamentId);
 
-		userEntity.unRegisterOfTournament(tournamentEntity);
-		userRepository.save(userEntity);
+		if (!registrationRepository.existsByUserIdAndTournamentId(userEntity.getId(), tournamentEntity.getId())) {
+			throw new IllegalArgumentException("L'utilisateur n'est pas inscrit à ce tournoi.");
+		}
 
+		RegistrationOfTournamentEntity registrationEntity = registrationRepository.findByUserIdAndTournamentId(userEntity.getId(), tournamentEntity.getId()).orElseThrow(() ->new EntityNotFoundException("Inscription n'on trouvé "));
+		registrationRepository.deleteById(registrationEntity.getId());
+		
 		return RegistrationOfTournaResponseDto.builder().message("Utilisateur bien désinscrire du tournoi").build();
 	}
 

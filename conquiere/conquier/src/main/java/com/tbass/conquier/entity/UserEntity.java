@@ -58,21 +58,11 @@ public class UserEntity {
 	@CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
 	private Collection<String> roles = new ArrayList<>();
 
-	@OneToMany(mappedBy = "creator", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
 	private List<TournamentEntity> createdTournaments = new ArrayList<>();
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "users_tournamenta_participations", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "tournament_id"))
+	@ManyToMany
+	@JoinTable(name = "users_tournament_registration", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "tournament_id"))
 	private Set<TournamentEntity> tournaments = new HashSet<>();
-
-	public void registerOfTournament(TournamentEntity tournament) {
-		tournaments.add(tournament);
-		tournament.getParticipants().add(this);
-	}
-
-	public void unRegisterOfTournament(TournamentEntity tournament) {
-		tournaments.remove(tournament);
-		tournament.getParticipants().remove(this);
-	}
 
 }

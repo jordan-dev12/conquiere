@@ -23,7 +23,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "COMPETITIONS")
+@Table(name = "TOURNAMENT")
 public class TournamentEntity {
 
 	@Id

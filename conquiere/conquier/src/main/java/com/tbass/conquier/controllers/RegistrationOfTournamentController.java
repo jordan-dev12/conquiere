@@ -36,7 +36,7 @@ public class RegistrationOfTournamentController {
 	@Operation(summary = "Inscrire l'utilisateur connecté à un tournoi", description = "Permet à l'utilisateur actuellement de s'inscrire à un tournoi spécifique")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Inscription réussie", content = @Content(schema = @Schema(implementation = RegistrationOfTournaResponseDto.class))),
-			@ApiResponse(responseCode = "400", description = "Tournoi complet ou utilisateur déjà inscrit"),
+			@ApiResponse(responseCode = "400", description = "Utilisateur déjà inscrit"),
 			@ApiResponse(responseCode = "404", description = "Tournoi ou utilisateur non trouvé"),
 			@ApiResponse(responseCode = "403", description = "Accès refusé")
 	})
