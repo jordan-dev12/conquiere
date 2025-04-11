@@ -59,9 +59,8 @@ public class RegistrationOfTournamentServiceImpl implements RegistrationOfTourna
 			throw new IllegalArgumentException("L'utilisateur n'est pas inscrit à ce tournoi.");
 		}
 
-		RegistrationOfTournamentEntity registrationEntity = registrationRepository.findByUserIdAndTournamentId(userEntity.getId(), tournamentEntity.getId()).orElseThrow(() ->new EntityNotFoundException("Inscription n'on trouvé "));
-		registrationRepository.deleteById(registrationEntity.getId());
-		
+		registrationRepository.deleteByUserIdAndTournamentId(userEntity.getId(), tournamentEntity.getId());
+
 		return RegistrationOfTournaResponseDto.builder().message("Utilisateur bien désinscrire du tournoi").build();
 	}
 
