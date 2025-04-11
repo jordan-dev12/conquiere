@@ -17,7 +17,7 @@ public interface TournamentMapper {
 	@Mapping(target = "description", source = "entity.description")
 	@Mapping(target = "dateIssued", source = "entity.dateIssued")
 	@Mapping(target = "eventDate", source = "entity.eventDate")
-	@Mapping(target = "adminId", ignore = true)
+	@Mapping(target = "adminId", expression = "java(entity.getCreator().getId())")
 	TournamentResponseDto toDto(TournamentEntity entity);
 
 	@Mapping(target = "name", source = "dto.name")

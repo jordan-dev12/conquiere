@@ -75,6 +75,12 @@ public class UserServiceImpl implements UserService {
 		this.userRepository.deleteAll();
 	}
 
+	@Override
+	public UserRegistrationResponseDto getByUsername(String username) {
+	  UserEntity userEntityResponse = 	userRepository.findByEmail(username).orElseThrow(() -> new EntityNotFoundException("Utilisateur non trouvé avec l'username: " + username));
+		return  userMapper.toDto(userEntityResponse);
+	}
+
 	private void addRole(UserEntity userEntity, String role) {
 		if (userEntity.getRoles() == null) {
 			userEntity.setRoles(new HashSet<>());

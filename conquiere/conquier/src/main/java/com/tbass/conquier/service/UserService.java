@@ -15,6 +15,8 @@ public interface UserService {
 
 	public UserRegistrationResponseDto getById(long id);
 
+	public UserRegistrationResponseDto getByUsername(String username);
+
 	public UsersResponseDto getClients(PaginationDto pagination);
 
 	public void deleteAll();
