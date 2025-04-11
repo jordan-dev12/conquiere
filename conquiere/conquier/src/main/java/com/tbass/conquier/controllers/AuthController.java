@@ -24,7 +24,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 @Tag(name = "Authentification", description = "API de gestion des authentifications")
 @RequiredArgsConstructor
 public class AuthController {
@@ -33,7 +33,7 @@ public class AuthController {
 	private final UserDetailsService userDetailsService;
 	private final JwtUtil jwtUtil;
 
-	@PostMapping("/auth")
+	@PostMapping("/autentification")
 	@Operation(summary = "Authentification  d'un utilisateur", description = "Permet d'authentifier un utilisateur dans le système", responses = {
 			@ApiResponse(responseCode = "200", description = "Utilisateur authentifier avec succès", content = @Content(schema = @Schema(implementation = AuthResponseDto.class))),
 			@ApiResponse(responseCode = "401", description = "Credentials invalides", content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
