@@ -48,7 +48,7 @@ public class TournamentController {
 	public TournamentResponseDto create(@RequestBody @Valid TournamentRequestDto tournamentDTO) {
 
 		LocalDate currentDate = LocalDate.now();
-		if (tournamentDTO.getEventDate().isBefore(currentDate)) {
+		if (tournamentDTO.eventDate().isBefore(currentDate)) {
 			throw new IllegalArgumentException("La date du tournoi doit être postérieure ou égale à la date d'aujourd'hui");
 		}
 

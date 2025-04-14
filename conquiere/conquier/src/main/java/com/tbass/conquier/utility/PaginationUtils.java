@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PaginationUtils {
-	
+
 	public static PageRequest getPageable(PaginationDto request) {
-        return PageRequest.of(request.getPage(), request.getSize()); 
-    } 
+		return PageRequest.of(request.page(), request.size());
+	}
 
 }

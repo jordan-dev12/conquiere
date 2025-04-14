@@ -29,8 +29,8 @@ public class RegistrationOfTournamentServiceImpl implements RegistrationOfTourna
 	@Transactional
 	public RegistrationOfTournaResponseDto register(RegistrationOfTournamentRequestDto registrationRequest) {
 
-		long tournamentId = registrationRequest.getTournamentId();
-		UserEntity userEntity = findUserByUsername(registrationRequest.getUsername());
+		long tournamentId = registrationRequest.tournamentId();
+		UserEntity userEntity = findUserByUsername(registrationRequest.username());
 		TournamentEntity tournamentEntity = findTournamentById(tournamentId);
 
 		if (registrationRepository.existsByUserIdAndTournamentId(userEntity.getId(), tournamentEntity.getId())) {
@@ -51,8 +51,8 @@ public class RegistrationOfTournamentServiceImpl implements RegistrationOfTourna
 	@Transactional
 	public RegistrationOfTournaResponseDto unRegister(RegistrationOfTournamentRequestDto registrationRequest) {
 
-		long tournamentId = registrationRequest.getTournamentId();
-		UserEntity userEntity = findUserByUsername(registrationRequest.getUsername());
+		long tournamentId = registrationRequest.tournamentId();
+		UserEntity userEntity = findUserByUsername(registrationRequest.username());
 		TournamentEntity tournamentEntity = findTournamentById(tournamentId);
 
 		if (!registrationRepository.existsByUserIdAndTournamentId(userEntity.getId(), tournamentEntity.getId())) {

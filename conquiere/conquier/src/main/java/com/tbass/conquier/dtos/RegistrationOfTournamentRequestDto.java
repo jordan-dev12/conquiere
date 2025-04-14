@@ -1,15 +1,8 @@
 package com.tbass.conquier.dtos;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 @Builder(toBuilder = true)
-public class RegistrationOfTournamentRequestDto {
-
-	private String username;
-	private long tournamentId;
-
+public record RegistrationOfTournamentRequestDto(@NotNull String username, @NotNull Long tournamentId) {
 }
