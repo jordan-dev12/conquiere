@@ -2,23 +2,20 @@ package com.tbass.conquier.dtos;
 
 import java.time.LocalDate;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Builder;
 
-@Getter
-@Setter
-public class TournamentResponseDto {
+@Builder
+public record TournamentResponseDto(
 
-	private long id;
+		Long id,
 
-	private String name;
+		String name,
 
-	private String description;
+		String description,
 
-	private LocalDate dateIssued;
+		LocalDate dateIssued,
 
-	private LocalDate eventDate;
+		LocalDate eventDate,
 
-	private Long adminId;
-
+		Long adminId) {
 }

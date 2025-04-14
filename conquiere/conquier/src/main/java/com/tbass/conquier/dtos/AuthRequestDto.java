@@ -1,5 +1,7 @@
 package com.tbass.conquier.dtos;
 
-public record AuthRequestDto(String username, String password) {
+import jakarta.validation.constraints.NotBlank;
+
+public record AuthRequestDto(@NotBlank String username, @NotBlank String password) {
 
 }

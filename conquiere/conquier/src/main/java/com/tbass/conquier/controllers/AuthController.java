@@ -21,6 +21,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -38,7 +39,7 @@ public class AuthController {
 			@ApiResponse(responseCode = "200", description = "Utilisateur authentifier avec succès", content = @Content(schema = @Schema(implementation = AuthResponseDto.class))),
 			@ApiResponse(responseCode = "401", description = "Credentials invalides", content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ProblemDetail.class))) })
-	public AuthResponseDto createAuthenticationToken(@RequestBody AuthRequestDto auth) throws Exception {
+	public AuthResponseDto createAuthenticationToken(@RequestBody @Valid AuthRequestDto auth) throws Exception {
 
 		authenticate(auth.username(), auth.password());
 

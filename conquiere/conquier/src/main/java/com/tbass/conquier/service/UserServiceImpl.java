@@ -55,11 +55,11 @@ public class UserServiceImpl implements UserService {
 
 		PageRequest pageable = PaginationUtils.getPageable(pagination);
 		Page<UserEntity> usersEntities = userRepository.findAll(pageable);
-		UsersResponseDto users = new UsersResponseDto();
-		users.setUsers(usersEntities.stream().map(entity -> userMapper.toDto(entity)).toList());
-		users.setTotals(usersEntities.getNumberOfElements());
-
-		return users;
+		UsersResponseDto usersResponse = UsersResponseDto.builder()
+			.users(usersEntities.stream().map(entity -> userMapper.toDto(entity)).toList())
+			.totals(usersEntities.getNumberOfElements())
+			.build();
+		return usersResponse;
 
 	}
 
@@ -77,8 +77,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserRegistrationResponseDto getByUsername(String username) {
-	  UserEntity userEntityResponse = 	userRepository.findByEmail(username).orElseThrow(() -> new EntityNotFoundException("Utilisateur non trouvé avec l'username: " + username));
-		return  userMapper.toDto(userEntityResponse);
+		UserEntity userEntityResponse = userRepository.findByEmail(username)
+			.orElseThrow(() -> new EntityNotFoundException("Utilisateur non trouvé avec l'username: " + username));
+		return userMapper.toDto(userEntityResponse);
 	}
 
 	private void addRole(UserEntity userEntity, String role) {

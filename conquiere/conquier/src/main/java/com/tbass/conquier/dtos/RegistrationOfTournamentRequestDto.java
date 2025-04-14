@@ -1,8 +1,8 @@
 package com.tbass.conquier.dtos;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 
 @Builder(toBuilder = true)
-public record RegistrationOfTournamentRequestDto(@NotNull String username, @NotNull Long tournamentId) {
+public record RegistrationOfTournamentRequestDto(@NotBlank String username, @NotBlank Long tournamentId) {
 }

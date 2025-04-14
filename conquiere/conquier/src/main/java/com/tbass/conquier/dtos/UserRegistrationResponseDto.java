@@ -5,24 +5,21 @@ import java.util.ArrayList;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Builder;
 
-@Getter
-@Setter
-public class UserRegistrationResponseDto {
+@Builder(toBuilder = true)
+public record UserRegistrationResponseDto(
+		Long id,
 
-	private Long id;
+		String name,
 
-	private String name;
+		String surname,
 
-	private String surname;
+		String email,
 
-	private String email;
+		@JsonFormat(pattern = "dd-MM-yyyy") LocalDate birthdate,
 
-	@JsonFormat(pattern = "dd-MM-yyyy")
-	private LocalDate birthdate;
+		ArrayList<String> roles)
 
-	private ArrayList<String> roles;
-
+{
 }

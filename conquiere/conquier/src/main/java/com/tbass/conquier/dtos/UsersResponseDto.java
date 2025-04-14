@@ -3,18 +3,13 @@ package com.tbass.conquier.dtos;
 import java.util.List;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Builder;
 
-@Getter
-@Setter
 @Schema(description = "Modèle liste utilisateurs")
-public class UsersResponseDto {
+@Builder(toBuilder = true)
+public record UsersResponseDto(
 
-	@Schema(description = "Liste utilisateur")
-	List<UserRegistrationResponseDto> users;
+		@Schema(description = "Liste utilisateur") List<UserRegistrationResponseDto> users,
 
-	@Schema(description = "Nombres totals d'utilisateurs retournées")
-	int totals;
-
+		@Schema(description = "Nombres totals d'utilisateurs retournées") int totals) {
 }
