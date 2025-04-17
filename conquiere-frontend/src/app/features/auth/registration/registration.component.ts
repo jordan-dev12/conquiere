@@ -1,77 +1,65 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AUTH_URL } from '../../../constants/url';
-import { Form, FormsModule } from '@angular/forms';
-import { User } from '../../../models/user.model';
+import { AbstractControl, Form, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-registration',
-  imports: [RouterModule, FormsModule],
+  imports: [RouterModule, ReactiveFormsModule],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.css'
 })
 export class RegistrationComponent {
 
+
+  datePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+  private fb = inject(FormBuilder);
+
   readonly AUTH = AUTH_URL;
-  userData = signal<User>({
-    name: '',
-    surname: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    birthdate: ''
-  })
 
   // Signal pour les erreurs de validation
 formErrors = signal<Record<string, string>>({});
 
-// verifier que la password est la m
+get f() { return this.registrationForm.controls; }
 
+registrationForm = this.fb.group({
+  name: ['', [Validators.required, Validators.minLength(2)]],
+  surname: ['', [Validators.required, Validators.minLength(2)]],
+  terms: ['', [Validators.required, Validators.requiredTrue]],
+  // birthdate: ['', [Validators.required, Validators.pattern(this.datePattern)]],
+  birthdate: ['', [Validators.required]],
+  email: ['', 
+    [Validators.required, Validators.email]
+  ],
+  password: ['', [
+    Validators.required, 
+    Validators.minLength(8),
+    Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+  ]],
+  confirmPassword: ['', Validators.required]
+}, { validators: this.passwordMatchValidator });
 
-  registration(form: Form) {
-    console.log(this.userData());
+  registration() {
   }
 
 
-  updateEmail(value : string){
-
-    this.userData.update((data) => ({
-      ...data,
-      email : value
-    }));
+  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+    const password = control.get('password')?.value;
+    const confirmPassword = control.get('confirmPassword')?.value;
+    
+    if (password !== confirmPassword) {
+      control.get('confirmPassword')?.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true };
+    }
+    
+    return null;
   }
 
-  updatePassword(password :string){
-
-  }
-
-  isFormValid = computed<boolean>(() => {
-    const data = this.userData();
-    return (
-      data.name.trim().length > 0 &&
-      data.surname.trim().length > 0 &&
-      this.isValidEmail(data.email) &&
-      data.password.length >= 8 &&
-      this.passwordMatch() 
-    );
-  });
-
-  passwordMatch = computed( () => this.userData().confirmPassword === this.userData().password);
 
 
 
-  // Fonction de validation personnalisée
-  isValidEmail(email: string) {
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  
-  if (!emailRegex.test(email)) {
-    this.formErrors.update(errors => ({
-      ...errors,
-      email: 'Format d\'email invalide'
-    }));
-    return false;
-  } 
-  return true;
-}
+
+
+
 
 }

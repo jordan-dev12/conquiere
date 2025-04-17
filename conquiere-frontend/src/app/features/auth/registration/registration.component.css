@@ -10,3 +10,10 @@
     padding: 0 0.2rem;
   }
   
+
+  .validation-error {
+    color: #e53935;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
