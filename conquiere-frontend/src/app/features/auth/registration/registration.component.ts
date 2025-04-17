@@ -2,6 +2,8 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AUTH_URL } from '../../../constants/url';
 import { AbstractControl, Form, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { User } from '../../../models/user.model';
+import { UserRegistrationService } from '../../../services/user-registration.service';
 
 @Component({
   selector: 'app-registration',
@@ -14,6 +16,7 @@ export class RegistrationComponent {
 
   datePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
   private fb = inject(FormBuilder);
+  private userService = inject(UserRegistrationService);
 
   readonly AUTH = AUTH_URL;
 
@@ -40,6 +43,25 @@ registrationForm = this.fb.group({
 }, { validators: this.passwordMatchValidator });
 
   registration() {
+
+      if (this.registrationForm.invalid) {
+        Object.keys(this.registrationForm.controls).forEach(key => {
+          const control = this.registrationForm.get(key);
+          control?.markAsTouched();
+        });
+        return;
+      }
+
+
+      const userRequest: User = {
+        name: this.f.name.value!,
+        surname: this.f.surname.value!,
+        email: this.f.email.value!,
+        birthdate: this.f.birthdate.value!,
+        password: this.f.password.value!
+      };
+
+      this.userService.registerUser(userRequest).subscribe((data) => console.log(data));
   }
 
 

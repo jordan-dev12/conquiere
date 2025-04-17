@@ -20,7 +20,7 @@
                         @if (f.name.touched && f.name.errors) {
                           <div class="validation-error">
                             @if (f.name.errors['required']) {
-                              <span>Le prénom est requis</span>
+                              <span>Le nom est requis</span>
                             } @else if (f.name.errors['minlength']) {
                               <span>Le nom doit contenir au moins 2 caractères</span>
                             }
@@ -123,7 +123,6 @@
                   </form>
 
                   <p class="info-text">Vous avez déjà un compte ? <a [routerLink] = "AUTH.login" >Connectez-vous ici</a></p>
-                  <p class="info-text">Les champs marqués d'un <span style="color: red;">*</span> sont obligatoires.</p>
           
   
                 </div>
