@@ -1,5 +1,8 @@
 package com.tbass.conquier.config;
 
+import java.util.Arrays;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.tbass.conquier.security.AuthTokenFilter;
 
@@ -25,6 +31,9 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
 	private final AuthTokenFilter authTokenFilter;
+
+	@Value("${conquiere.url.angular}")
+	private String conquierUrlAngular;
 
 	@Bean
 	protected PasswordEncoder passwordEncoder() {
@@ -43,6 +52,19 @@ public class SecurityConfig {
 	}
 
 	@Bean
+	protected CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Arrays.asList(conquierUrlAngular));
+		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+		configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+		configuration.setAllowCredentials(true);
+
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
+
+	@Bean
 	protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable())
 			.authorizeHttpRequests(
@@ -57,6 +79,7 @@ public class SecurityConfig {
 						.anyRequest()
 						.authenticated())
 			.logout(logout -> logout.permitAll())
+			.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
 		http.headers(header -> header.frameOptions(f -> f.sameOrigin()));
