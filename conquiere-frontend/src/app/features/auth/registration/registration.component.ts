@@ -20,8 +20,6 @@ export class RegistrationComponent {
 
   readonly AUTH = AUTH_URL;
 
-  // Signal pour les erreurs de validation
-formErrors = signal<Record<string, string>>({});
 
 get f() { return this.registrationForm.controls; }
 

@@ -1,7 +1,5 @@
 package com.tbass.conquier;
 
-import java.time.format.DateTimeFormatter;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -47,10 +45,6 @@ public abstract class AbstractIntegrationTest {
 	@BeforeEach
 	protected void setup() {
 		idHelper.reset();
-	}
-
-	protected DateTimeFormatter getFormatter() {
-		return DateTimeFormatter.ofPattern("dd-MM-yyyy");
 	}
 
 }

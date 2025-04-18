@@ -30,9 +30,13 @@ public class UserServiceImpl implements UserService {
 	private final UserMapper userMapper;
 
 	@Override
-	public UserRegistrationResponseDto registerUsers(UserRegistrationRequestDto client) {
+	public UserRegistrationResponseDto registerUsers(UserRegistrationRequestDto userRegistrationDto) {
 
-		UserEntity userEntity = userMapper.toEntity(client);
+		if (userRepository.existsByEmail(userRegistrationDto.email())) {
+			throw new IllegalArgumentException("Cet email est déjà enregistré dans notre système");
+		}
+
+		UserEntity userEntity = userMapper.toEntity(userRegistrationDto);
 		userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
 		addRole(userEntity, Role.USER.getValue());
 		return userMapper.toDto(userRepository.save(userEntity));

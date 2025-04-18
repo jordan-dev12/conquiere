@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.info-text {
+    font-size: 14px;
+    color: #666;
+    margin-top: 20px;
+}
+
+.form-outline input:not(:placeholder-shown) + label {
+    transform: translateY(-1rem) translateY(0.1rem) scale(.8);
+    background-color: white;
+    padding: 0 0.2rem;
+  }
+  
+
+  .validation-error {
+    color: #e53935;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  

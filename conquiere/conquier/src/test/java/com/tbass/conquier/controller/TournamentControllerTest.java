@@ -45,8 +45,8 @@ public class TournamentControllerTest extends AbstractIntegrationTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.id", equalTo(tournamentId.intValue())))
 				.andExpect(jsonPath("$.name", is("Calcio")))
-				.andExpect(jsonPath("$.dateIssued", is(DATE_ISSUE.format(getFormatter()))))
-				.andExpect(jsonPath("$.eventDate", is(DATE_ISSUE.plusDays(7).format(getFormatter()))))
+				.andExpect(jsonPath("$.dateIssued", is(DATE_ISSUE.toString())))
+				.andExpect(jsonPath("$.eventDate", is(DATE_ISSUE.plusDays(7).toString())))
 				.andExpect(jsonPath("$.description", is("Tournoi d'été")))
 				.andExpect(jsonPath("$.adminId").isNotEmpty());
 
@@ -86,8 +86,8 @@ public class TournamentControllerTest extends AbstractIntegrationTest {
 				.andExpect(jsonPath("$.id").isNotEmpty())
 				.andExpect(jsonPath("$.name", equalTo("Grand prix")))
 				.andExpect(jsonPath("$.description", equalTo("Premier experience")))
-				.andExpect(jsonPath("$.dateIssued", is(DATE_ISSUE.format(getFormatter()))))
-				.andExpect(jsonPath("$.eventDate", is(evenDate.format(getFormatter()))))
+				.andExpect(jsonPath("$.dateIssued", is(DATE_ISSUE.toString())))
+				.andExpect(jsonPath("$.eventDate", is(evenDate.toString())))
 				.andExpect(jsonPath("$.adminId", equalTo(adminId.intValue())));
 
 		}
