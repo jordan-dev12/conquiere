@@ -2,17 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { User } from '../models/user.model';
 import { Observable } from 'rxjs';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserRegistrationService {
 
-  private apiUrl = 'http://localhost:8081/api/user';
   private http = inject(HttpClient);
+  private apiUrl = inject(ApiService);
 
   registerUser(userData: User): Observable<User> {
 
-    return this.http.post<User>(`${this.apiUrl}/register`, userData)
+    return this.http.post<User>(`${this.apiUrl.getUsersUrl()}/register`, userData)
 }
 }
