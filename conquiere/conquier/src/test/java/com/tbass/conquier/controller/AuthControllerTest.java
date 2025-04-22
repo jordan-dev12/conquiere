@@ -35,7 +35,7 @@ public class AuthControllerTest extends AbstractIntegrationTest {
 			AuthRequestDto authRequest = new AuthRequestDto("Jean@user.com", "password123");
 
 			mockMvc
-				.perform(post(BASE_URL + "/autentification").content(objectMapper.writeValueAsString(authRequest))
+				.perform(post(BASE_URL + "/login").content(objectMapper.writeValueAsString(authRequest))
 					.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.jwtToken").isNotEmpty());
@@ -48,7 +48,7 @@ public class AuthControllerTest extends AbstractIntegrationTest {
 			AuthRequestDto authRequest = new AuthRequestDto("Jean@user.com", "password123adas");
 
 			mockMvc
-				.perform(post(BASE_URL + "/autentification").content(objectMapper.writeValueAsString(authRequest))
+				.perform(post(BASE_URL + "/login").content(objectMapper.writeValueAsString(authRequest))
 					.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnauthorized())
 				.andExpect(jsonPath("$.detail", equalTo("INVALID_CREDENTIALS")));
@@ -62,7 +62,7 @@ public class AuthControllerTest extends AbstractIntegrationTest {
 			AuthRequestDto authRequest = new AuthRequestDto("Jean@user.com", "password123");
 
 			mockMvc
-				.perform(post(BASE_URL + "/autentification").content(objectMapper.writeValueAsString(authRequest))
+				.perform(post(BASE_URL + "/login").content(objectMapper.writeValueAsString(authRequest))
 					.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnauthorized())
 				.andExpect(jsonPath("$.detail", equalTo("INVALID_CREDENTIALS")));

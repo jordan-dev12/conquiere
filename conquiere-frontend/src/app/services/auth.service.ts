@@ -3,17 +3,26 @@ import { inject, Injectable } from '@angular/core';
 import { AuthRequest } from '../models/auth-request.model';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
+import { AuthResponse } from '../models/auth-response.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-   private apiUrl = inject(ApiService);
+  private apiUrl = inject(ApiService);
   private http = inject(HttpClient);
 
-  login(auth: AuthRequest): Observable<any> {
+  login(auth: AuthRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl.getAuthUrl()}/login`, auth);
+  }
 
-    return this.http.post<any>(`${this.apiUrl.getAuthUrl()}/autentification`, auth);
+
+  setToken(token: string): void {
+    localStorage.setItem('auth_token', token);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('auth_token');
   }
 }

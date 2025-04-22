@@ -20,7 +20,7 @@ export class LoginComponent {
 
   loginForm = this.fb.group({
     email: ['',
-      [Validators.required,Validators.email]
+      [Validators.required, Validators.email]
     ],
     rememberMe: ['',],
     password: ['', [
@@ -46,8 +46,9 @@ export class LoginComponent {
       password: this.f.password.value!
     };
 
-    this.authService.login(request).subscribe((data) => console.log(data));;
-
+    this.authService.login(request).subscribe(response => {
+      this.authService.setToken(response.jwtToken)
+    });
   }
 
 }

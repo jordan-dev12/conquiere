@@ -34,7 +34,7 @@ public class AuthController {
 	private final UserDetailsService userDetailsService;
 	private final JwtUtil jwtUtil;
 
-	@PostMapping("/autentification")
+	@PostMapping("/login")
 	@Operation(summary = "Authentification  d'un utilisateur", description = "Permet d'authentifier un utilisateur dans le système", responses = {
 			@ApiResponse(responseCode = "200", description = "Utilisateur authentifier avec succès", content = @Content(schema = @Schema(implementation = AuthResponseDto.class))),
 			@ApiResponse(responseCode = "401", description = "Credentials invalides", content = @Content(schema = @Schema(implementation = ProblemDetail.class))),

@@ -9,7 +9,7 @@ import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 })
 export class ErrorHandlerDialogComponent {
 
-  public title = 'Network Error';
+  public title = 'Attention';
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
 
 }
