@@ -38,7 +38,8 @@ public class AuthControllerTest extends AbstractIntegrationTest {
 				.perform(post(BASE_URL + "/login").content(objectMapper.writeValueAsString(authRequest))
 					.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.jwtToken").isNotEmpty());
+				.andExpect(jsonPath("$.accessToken").isNotEmpty())
+				.andExpect(jsonPath("$.refreshToken").isNotEmpty());
 
 		}
 
@@ -70,5 +71,25 @@ public class AuthControllerTest extends AbstractIntegrationTest {
 		}
 
 	}
+
+//	@Nested
+//	@DisplayName("Refresh")
+//	class Refresh {
+//
+//		@Test
+//		void ok() throws Exception {
+//
+//			AuthRequestDto authRequest = new AuthRequestDto("Jean@user.com", "password123");
+//
+//			mockMvc
+//				.perform(post(BASE_URL + "/login").content(objectMapper.writeValueAsString(authRequest))
+//					.contentType(MediaType.APPLICATION_JSON))
+//				.andExpect(status().isOk())
+//				.andExpect(jsonPath("$.accessToken").isNotEmpty())
+//				.andExpect(jsonPath("$.refreshToken").isNotEmpty());
+//
+//		}
+//
+//	}
 
 }

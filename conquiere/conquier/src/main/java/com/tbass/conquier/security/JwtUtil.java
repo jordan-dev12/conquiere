@@ -29,8 +29,11 @@ public class JwtUtil {
 	@Value("${jwt.secret}")
 	private String secret;
 
-	@Value("${jwt.jwtExpirationInMs}")
-	private int jwtExpirationInMs;
+	@Value("${jwt.access.token.expiration}")
+	private long jwtExpirationInMs;
+
+	@Value("${jwt.refresh.token.expiration}")
+	private int jwtRefreshTokenExpiration;
 
 	public String getUsernameFromToken(final String token) {
 		Object claimFromToken = getClaimFromToken(token, body -> body.get(USERNAME));
@@ -64,21 +67,34 @@ public class JwtUtil {
 	}
 
 	// generate token for user
-	public String generateToken(final UserDetails userDetails, final String username) {
+	public String generateAccessToken(final UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
 		claims.put(USER_DETAILS, userDetails);
-		claims.put(USERNAME, username);
-		return doGenerateToken(claims, userDetails.getUsername());
+		claims.put(USERNAME, userDetails.getUsername());
+		return doGenerateToken(claims, userDetails.getUsername(), jwtExpirationInMs);
 	}
 
-	private String doGenerateToken(final Map<String, Object> claims, final String subject) {
+	public String generateRefreshToken(final UserDetails userDetails) {
+		Map<String, Object> claims = new HashMap<>();
+//		claims.put(USER_DETAILS, userDetails);
+		claims.put(USERNAME, userDetails.getUsername());
+		return doGenerateToken(claims, userDetails.getUsername(), jwtRefreshTokenExpiration);
+	}
+
+	private String doGenerateToken(final Map<String, Object> claims, final String subject, long jwtExperation) {
 
 		Key key = calculateKey();
 
-		Instant issuedAt = Instant.now().truncatedTo(ChronoUnit.SECONDS);
-		Instant expiration = issuedAt.plus(jwtExpirationInMs, ChronoUnit.SECONDS);
+		Instant issuedAt = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+		Instant expiration = issuedAt.plus(jwtExperation, ChronoUnit.MILLIS);
 
-		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(Date.from(issuedAt)).setExpiration(Date.from(expiration)).signWith(key, SignatureAlgorithm.HS512).compact();
+		return Jwts.builder()
+			.setClaims(claims)
+			.setSubject(subject)
+			.setIssuedAt(Date.from(issuedAt))
+			.setExpiration(Date.from(expiration))
+			.signWith(key, SignatureAlgorithm.HS512)
+			.compact();
 
 	}
 

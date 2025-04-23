@@ -1,6 +1,7 @@
 package com.tbass.conquier.controllers;
 
 import org.springframework.http.ProblemDetail;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tbass.conquier.dtos.AuthRequestDto;
 import com.tbass.conquier.dtos.AuthResponseDto;
+import com.tbass.conquier.dtos.RefreshTokenRequestDto;
 import com.tbass.conquier.security.JwtUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,9 +47,31 @@ public class AuthController {
 
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(auth.username());
 
-		final String token = jwtUtil.generateToken(userDetails, auth.username());
+		final String accessToken = jwtUtil.generateAccessToken(userDetails);
+		final String refreshToken = jwtUtil.generateRefreshToken(userDetails);
 
-		return new AuthResponseDto(token);
+		return new AuthResponseDto(accessToken, refreshToken);
+	}
+
+	@PostMapping("/refresh")
+	@Operation(summary = "Rafraîchissement du token", description = "Utilise un refresh token valide pour générer un nouvel access token", responses = {
+			@ApiResponse(responseCode = "200", description = "Token rafraîchi avec succès", content = @Content(schema = @Schema(implementation = AuthResponseDto.class))),
+			@ApiResponse(responseCode = "403", description = "Refresh token invalide ou expiré")
+	})
+	public AuthResponseDto refreshToken(@RequestBody @Valid RefreshTokenRequestDto request) {
+
+		String token = request.refreshToken();
+		String username = request.username();
+		String accessToken = null;
+		if (jwtUtil.validToken(token, username)) {
+			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+			accessToken = jwtUtil.generateAccessToken(userDetails);
+		} else {
+			throw new AccessDeniedException("Refresh token invalide ou expiré");
+		}
+
+		return new AuthResponseDto(accessToken, request.refreshToken());
+
 	}
 
 	private void authenticate(String username, String password) throws Exception {
