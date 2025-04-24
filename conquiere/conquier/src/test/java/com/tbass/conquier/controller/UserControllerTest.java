@@ -1,6 +1,7 @@
 package com.tbass.conquier.controller;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -77,7 +78,8 @@ public class UserControllerTest extends AbstractIntegrationTest {
 				.andExpect(jsonPath("$.id").isNotEmpty())
 				.andExpect(jsonPath("$.name", is("Jean")))
 				.andExpect(jsonPath("$.surname", is("Jean")))
-				.andExpect(jsonPath("$.email", is("Jean@user.com")));
+				.andExpect(jsonPath("$.email", is("Jean@user.com")))
+				.andExpect(jsonPath("$.roles", hasItem("USER")));
 
 		}
 
@@ -89,6 +91,33 @@ public class UserControllerTest extends AbstractIntegrationTest {
 				.andExpect(status().isNotFound())
 				.andExpect(jsonPath("$.detail", equalTo("Utilisateur non trouvé avec l'ID: 195")));
 
+		}
+
+	}
+
+	@Nested
+	@DisplayName("Get Current User")
+	class GetCurrentUser {
+
+		@Test
+		@WithMockUser(username = "Jean@user.com", roles = { "USER" })
+		void found() throws Exception {
+
+			mockMvc.perform(get(BASE_URL + "/get"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.id").isNotEmpty())
+				.andExpect(jsonPath("$.name", is("Jean")))
+				.andExpect(jsonPath("$.surname", is("Jean")))
+				.andExpect(jsonPath("$.email", is("Jean@user.com")))
+				.andExpect(jsonPath("$.roles", hasItem("USER")));
+
+		}
+
+		@Test
+		void noFound() throws Exception {
+
+			mockMvc.perform(get(BASE_URL + "/get"))
+				.andExpect(status().isForbidden());
 		}
 
 	}
