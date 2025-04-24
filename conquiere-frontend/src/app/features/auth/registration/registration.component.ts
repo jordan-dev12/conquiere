@@ -1,22 +1,30 @@
 import { Component, inject } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AUTH_URL } from '../../../constants/url';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { User } from '../../../models/user.model';
 import { UserRegistrationService } from '../../../services/user-registration.service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { CustomModalComponent } from '../../../custom/custom-modal/custom-modal.component';
 
 @Component({
   selector: 'app-registration',
-  imports: [RouterModule, ReactiveFormsModule],
+  imports: [RouterModule, ReactiveFormsModule, MatDialogModule],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.css'
 })
 export class RegistrationComponent {
 
+  constructor() {
+  }
+
 
   datePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
   private fb = inject(FormBuilder);
+  private router = inject(Router);
   private userService = inject(UserRegistrationService);
+  private matDialog = inject(MatDialog);
+
 
   readonly AUTH = AUTH_URL;
 
@@ -59,9 +67,24 @@ export class RegistrationComponent {
       password: this.f.password.value!
     };
 
-    this.userService.registerUser(userRequest).subscribe((data) => console.log(data));
+    this.userService.registerUser(userRequest).subscribe(() => {
+
+
+      this.matDialog.open(CustomModalComponent, {
+        data: {
+          text: 'L \'utilisateur a complété son enregistrement dans le système.',
+          confirmationFunc: () => this.redirectToLoginPage()
+        }, disableClose: true,
+        hasBackdrop: true
+      },);
+
+    }
+    );
   }
 
+  redirectToLoginPage() {
+    this.router.navigate([AUTH_URL.login])
+  }
 
   passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
     const password = control.get('password')?.value;
