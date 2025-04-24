@@ -1,0 +1,11 @@
+.card {
+    border: 0;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 20, .08), 0 1px 2px rgba(0, 0, 20, .08);
+}
+
+.py-6 {
+    margin-top: 3rem !important;
+    margin-left: 10em !important;
+    margin-right: 10em !important;
+}

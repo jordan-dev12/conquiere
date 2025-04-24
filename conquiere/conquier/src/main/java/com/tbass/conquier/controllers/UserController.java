@@ -60,6 +60,7 @@ public class UserController {
 	}
 
 	@GetMapping(value = "/get/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	@Operation(summary = "Récupérer un utilisateur par ID", description = "Retourne un utilisateur en fonction de son identifiant", responses = {
 			@ApiResponse(responseCode = "200", description = "Utilisateur trouvé", content = @Content(schema = @Schema(implementation = UserRegistrationResponseDto.class))),
 			@ApiResponse(responseCode = "404", description = "Utilisateur non trouvé", content = @Content(schema = @Schema(implementation = ProblemDetail.class))),

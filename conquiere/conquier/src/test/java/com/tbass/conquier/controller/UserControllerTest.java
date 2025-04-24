@@ -69,7 +69,7 @@ public class UserControllerTest extends AbstractIntegrationTest {
 	class GetByID {
 
 		@Test
-		@WithMockUser(username = "user", roles = { "USER" })
+		@WithMockUser(username = "admin", roles = { "ADMIN" })
 		void found() throws Exception {
 			long userID = idHelper.getUserIdByEmail("Jean@user.com");
 
