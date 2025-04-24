@@ -59,13 +59,13 @@ public class TournamentController {
 		return tournamentService.create(tournamentDTO, username, currentDate);
 	}
 
-	@PostMapping(value = "/getAll")
+	@PostMapping(value = "/loadAll")
 	@Operation(summary = "Lister tous les tournois", description = "Récupère la liste de tous les tournois avec pagination", responses = {
 			@ApiResponse(responseCode = "200", description = "Liste des tournois récupérée avec succès", content = @Content(schema = @Schema(implementation = Tournaments.class))),
 			@ApiResponse(responseCode = "403", description = "Accès refusé - L'utilisateur n'est pas connecté"),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ProblemDetail.class))) })
-	public Tournaments getAll(@RequestBody @Valid PaginationDto pagination) {
-		return tournamentService.getAll(pagination);
+	public Tournaments loadAll(@RequestBody @Valid PaginationDto pagination) {
+		return tournamentService.loadAll(pagination);
 	}
 
 	@Operation(summary = "Récupérer un tournoi par son ID", description = "Récupère les détails complets d'un tournoi")

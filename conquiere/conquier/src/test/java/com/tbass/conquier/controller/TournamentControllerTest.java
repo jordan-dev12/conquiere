@@ -75,7 +75,7 @@ public class TournamentControllerTest extends AbstractIntegrationTest {
 		void found() throws Exception {
 			tournamentHelper.tournaments().create().reguralTournoi("Test1");
 
-			mockMvc.perform(post(BASE_URL + "/getAll").content(objectMapper.writeValueAsString(PaginationDto.builder().page(0).size(12).build()))
+			mockMvc.perform(post(BASE_URL + "/loadAll").content(objectMapper.writeValueAsString(PaginationDto.builder().page(0).size(12).build()))
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.totals", is(2)))
@@ -94,7 +94,7 @@ public class TournamentControllerTest extends AbstractIntegrationTest {
 
 			tournamentHelper.tournaments().deleteAll();
 
-			mockMvc.perform(post(BASE_URL + "/getAll").content(objectMapper.writeValueAsString(PaginationDto.builder().page(0).size(12).build()))
+			mockMvc.perform(post(BASE_URL + "/loadAll").content(objectMapper.writeValueAsString(PaginationDto.builder().page(0).size(12).build()))
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.totals", is(0)));

@@ -13,7 +13,7 @@ public interface TournamentService {
 
 	public TournamentResponseDto getById(long id);
 
-	public Tournaments getAll(PaginationDto page);
+	public Tournaments loadAll(PaginationDto page);
 
 	public void deleteAll();
 

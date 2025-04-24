@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { AuthRequest } from '../models/auth-request.model';
-import { BehaviorSubject, catchError, map, Observable, of, tap, throwError } from 'rxjs';
+import { catchError, Observable, of, tap } from 'rxjs';
 import { ApiService } from './api.service';
 import { AuthResponse } from '../models/auth-response.model';
 import { jwtDecode, JwtPayload } from 'jwt-decode';

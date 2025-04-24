@@ -12,7 +12,10 @@ export class ApiService {
     return `${this.baseUrl}/api/auth`;
   }
 
-  getUsersUrl(): string {
+  getUserUrl(): string {
     return `${this.baseUrl}/api/user`;
+  }
+  getTournoiUrl(): string {
+    return `${this.baseUrl}/api/tournoi`;
   }
 }

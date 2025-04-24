@@ -58,7 +58,7 @@ public class TournamentServiceImpl implements TournamentService {
 	}
 
 	@Override
-	public Tournaments getAll(PaginationDto pagination) {
+	public Tournaments loadAll(PaginationDto pagination) {
 
 		PageRequest pageable = PaginationUtils.getPageable(pagination);
 		Page<TournamentEntity> tournamentEntities = tournamentRepository.findAll(pageable);
