@@ -2,6 +2,7 @@ package com.tbass.conquier.controller;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -18,6 +19,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tbass.conquier.AbstractIntegrationTest;
+import com.tbass.conquier.dtos.PaginationDto;
 import com.tbass.conquier.dtos.TournamentRequestDto;
 
 @Transactional
@@ -60,6 +62,42 @@ public class TournamentControllerTest extends AbstractIntegrationTest {
 				.andExpect(status().isNotFound())
 				.andExpect(jsonPath("$.detail", equalTo("Tournoir non trouvé avec l'ID: 25")));
 
+		}
+
+	}
+
+	@Nested
+	@DisplayName("Get All Tournoi ")
+	class GetAllTournoi {
+
+		@Test
+		@WithMockUser(username = "user", roles = { "USER" })
+		void found() throws Exception {
+			tournamentHelper.tournaments().create().reguralTournoi("Test1");
+
+			mockMvc.perform(post(BASE_URL + "/getAll").content(objectMapper.writeValueAsString(PaginationDto.builder().page(0).size(12).build()))
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.totals", is(2)))
+				.andExpect(jsonPath("$.tournaments", hasSize(2)))
+				.andExpect(jsonPath("$.tournaments[0].name", is("Calcio")))
+				.andExpect(jsonPath("$.tournaments[0].dateIssued", is(DATE_ISSUE.toString())))
+				.andExpect(jsonPath("$.tournaments[0].eventDate", is(DATE_ISSUE.plusDays(7).toString())))
+				.andExpect(jsonPath("$.tournaments[0].description", is("Tournoi d'été")))
+				.andExpect(jsonPath("$.tournaments[0].adminId").isNotEmpty());
+
+		}
+
+		@Test
+		@WithMockUser(username = "user", roles = { "USER" })
+		void noFound() throws Exception {
+
+			tournamentHelper.tournaments().deleteAll();
+
+			mockMvc.perform(post(BASE_URL + "/getAll").content(objectMapper.writeValueAsString(PaginationDto.builder().page(0).size(12).build()))
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.totals", is(0)));
 		}
 
 	}

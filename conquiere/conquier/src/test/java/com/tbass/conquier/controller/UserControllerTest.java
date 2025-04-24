@@ -84,7 +84,7 @@ public class UserControllerTest extends AbstractIntegrationTest {
 		}
 
 		@Test
-		@WithMockUser(username = "user", roles = { "USER" })
+		@WithMockUser(username = "admin", roles = { "ADMIN" })
 		void noFound() throws Exception {
 
 			mockMvc.perform(get(BASE_URL + "/get/{id}", 195))

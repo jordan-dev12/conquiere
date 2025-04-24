@@ -3,6 +3,7 @@ package com.tbass.conquier.controllers;
 import java.time.LocalDate;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tbass.conquier.dtos.PaginationDto;
 import com.tbass.conquier.dtos.TournamentRequestDto;
 import com.tbass.conquier.dtos.TournamentResponseDto;
+import com.tbass.conquier.dtos.Tournaments;
 import com.tbass.conquier.service.TournamentService;
 import com.tbass.conquier.utility.AuthentificationUtilis;
 
@@ -54,6 +57,15 @@ public class TournamentController {
 
 		String username = auth.getCurrentUsername();
 		return tournamentService.create(tournamentDTO, username, currentDate);
+	}
+
+	@PostMapping(value = "/getAll")
+	@Operation(summary = "Lister tous les tournois", description = "Récupère la liste de tous les tournois avec pagination", responses = {
+			@ApiResponse(responseCode = "200", description = "Liste des tournois récupérée avec succès", content = @Content(schema = @Schema(implementation = Tournaments.class))),
+			@ApiResponse(responseCode = "403", description = "Accès refusé - L'utilisateur n'est pas connecté"),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ProblemDetail.class))) })
+	public Tournaments getAll(@RequestBody @Valid PaginationDto pagination) {
+		return tournamentService.getAll(pagination);
 	}
 
 	@Operation(summary = "Récupérer un tournoi par son ID", description = "Récupère les détails complets d'un tournoi")
