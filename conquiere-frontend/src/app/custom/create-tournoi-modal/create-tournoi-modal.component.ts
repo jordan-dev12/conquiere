@@ -78,6 +78,7 @@ export class CreateTournoiModalComponent {
         return { invalidDateFormat: true };
       }
 
+
       return null;
     };
   }

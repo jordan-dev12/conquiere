@@ -32,6 +32,9 @@ export class AuthService {
   login(auth: AuthRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl.getAuthUrl()}/login`, auth);
   }
+  logout(): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl.getAuthUrl()}/logout`, {});
+  }
 
 
   public isAuthenticated = computed(() => !!this.accessTokenSignal());

@@ -26,10 +26,7 @@
             <!-- Create new tournoi -->
             @if(hasAdmin()){
             <div class="dropdown" (click)="createTournoiModal()">
-                <a data-mdb-dropdown-init class="text-reset me-3 dropdown-toggle hidden-arrow"
-                    id="navbarDropdownMenuLink" role="button" aria-expanded="false">
-                    <i class="fa fa-plus" aria-hidden="true"><span>Cree tournoi</span> </i>
-                </a>
+                <i class="fa fa-plus" aria-hidden="true"><span>Cree tournoi</span> </i>
             </div>
             }
             <!-- Notifications -->
@@ -40,24 +37,19 @@
                     <span class="badge rounded-pill badge-notification bg-danger">1</span>
                 </a>
             </div>
+
+
+
             <!-- Avatar -->
-            <div class="dropdown">
-                <a data-mdb-dropdown-init class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#"
-                    id="navbarDropdownMenuAvatar" role="button" aria-expanded="false">
+            <div ngbDropdown class="right-elements dropdown">
+                <a class="dropdown-toggle d-flex align-items-center hidden-arrow" id="dropdownBasic1" role="button">
                     <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" height="25"
-                        alt="Black and White Portrait of a Man" loading="lazy" />
+                        alt="Black and White Portrait of a Man" loading="lazy" ngbDropdownToggle />
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
-                    <li>
-                        <a class="dropdown-item" href="#">My profile</a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="#">Settings</a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="#">Logout</a>
-                    </li>
-                </ul>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                    <button ngbDropdownItem>Profil</button>
+                    <button ngbDropdownItem>Logout</button>
+                </div>
             </div>
         </div>
         <!-- Right elements -->
@@ -86,7 +78,9 @@
                     <div class="card-body">
                         <h5 class="card-title">{{tournoi.title}}</h5>
                         <p class="card-text">{{tournoi.description}}</p>
+                        @if(!hasAdmin()){
                         <button type="button" class="btn btn-primary" data-mdb-ripple-init>S'inscrire</button>
+                        }
                     </div>
                 </div>
 

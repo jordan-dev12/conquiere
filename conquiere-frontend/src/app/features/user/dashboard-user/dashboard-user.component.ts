@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { TournoiService } from '../../../services/tournoi.service';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { Tournoi } from '../../../models/tournoi.model';
 import { Pagination } from '../../../models/pagination.model';
 import { UserRegistrationService } from '../../../services/user-registration.service';
@@ -8,9 +9,10 @@ import { User } from '../../../models/user.model';
 import { CreateTournoiModalComponent } from '../../../custom/create-tournoi-modal/create-tournoi-modal.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
+
 @Component({
   selector: 'app-dashboard-user',
-  imports: [CommonModule, MatDialogModule],
+  imports: [CommonModule, MatDialogModule, NgbDropdownModule],
   templateUrl: './dashboard-user.component.html',
   styleUrl: './dashboard-user.component.css'
 })
@@ -51,7 +53,7 @@ export class DashboardUserComponent implements OnInit {
       data: {
         confirmationFunc: () => this.loadAllTournois()
       }, disableClose: false,
-      hasBackdrop: false
+      hasBackdrop: false, autoFocus: true
     },);
 
   }
@@ -63,14 +65,6 @@ export class DashboardUserComponent implements OnInit {
     });
   }
 
-
-  items = [
-    { id: 1, name: 'Item A', description: 'Description de l\'item A' },
-    { id: 2, name: 'Item B' },
-    { id: 3, name: 'Item C', description: 'Ceci est l\'item C' },
-    { id: 4, name: 'Item C', description: 'Ceci est l\'item C' },
-    { id: 5, name: 'Item C', description: 'Ceci est l\'item C' }
-  ];
 
 
 }
