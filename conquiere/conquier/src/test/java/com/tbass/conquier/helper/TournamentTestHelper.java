@@ -100,7 +100,7 @@ public class TournamentTestHelper {
 					.orElseThrow(() -> new RuntimeException("Admin user not found"));
 			}
 			TournamentEntity tournamentEntity = new TournamentEntity();
-			tournamentEntity.setName(name);
+			tournamentEntity.setTitle(name);
 			tournamentEntity.setDescription(description);
 			tournamentEntity.setDateIssued(dateIssue);
 			tournamentEntity.setEventDate(eventDate);

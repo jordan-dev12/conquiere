@@ -1,0 +1,63 @@
+<h2 mat-dialog-title>Créer un tournoi</h2>
+<div></div>
+<div></div>
+<mat-dialog-content>
+    <form class="mx-1 mx-md-4" [formGroup]="tournoiForm">
+
+        <div class="d-flex flex-row align-items-center mb-4">
+            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                <input type="text" formControlName="title" placeholder="" class="form-control" />
+                <label class="form-label" for="name">Titre*</label>
+                @if (f.title.touched && f.title.errors) {
+                <div class="validation-error">
+                    @if (f.title.errors['required']) {
+                    <span>Le nom est requis</span>
+                    } @else if (f.title.errors['minlength']) {
+                    <span>Le Titre doit contenir au moins 2 caractères</span>
+                    }
+                </div>
+                }
+            </div>
+        </div>
+
+        <div class="d-flex flex-row align-items-center mb-4">
+            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                <input type="text" placeholder="" formControlName="description" class="form-control" />
+                <label class="form-label" for="description">Description*</label>
+                @if (f.description.touched && f.description.errors) {
+                <div class="validation-error">
+                    @if (f.description.errors['required']) {
+                    <span>La description est requis</span>
+                    } @else if (f.description.errors['minlength']) {
+                    <span>La description doit contenir au moins 2 caractères</span>
+                    }
+                </div>
+                }
+            </div>
+        </div>
+
+        <div class="d-flex flex-row align-items-center mb-4">
+            <i class="fa fa-calendar fa-lg me-3 fa-fw"></i>
+            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                <input type="date" id="date" placeholder="" formControlName="eventDate" appDateFormat
+                    class="form-control" />
+                <label class="form-label" for="date">Date du tournoi*</label>
+
+            </div>
+        </div>
+
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+        <button type="button" mat-dialog-close data-mdb-button-init data-mdb-ripple-init
+            class="btn btn-danger btn-lg">Annuller</button>
+    </div>
+
+    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+        <button type="button" (click)="createTournoi()" data-mdb-button-init data-mdb-ripple-init
+            [disabled]="tournoiForm.invalid" class="btn btn-primary btn-lg">Crée</button>
+    </div>
+</mat-dialog-actions>

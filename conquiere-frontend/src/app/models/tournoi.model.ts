@@ -1,9 +1,9 @@
 export interface Tournoi {
 
-    id: number,
-    name: string,
+    id?: number,
+    title: string,
     description: string,
     eventDate: string,
-    dateIssued: string
+    dateIssued?: string
 
 }

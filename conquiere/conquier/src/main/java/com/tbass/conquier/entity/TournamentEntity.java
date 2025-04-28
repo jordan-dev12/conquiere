@@ -31,7 +31,7 @@ public class TournamentEntity {
 	private Long id;
 
 	@NotBlank(message = "Le nom du tournoi est obligatoire")
-	private String name;
+	private String title;
 
 	private String description;
 

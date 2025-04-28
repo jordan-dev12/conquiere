@@ -10,7 +10,7 @@ import lombok.Builder;
 @Builder(toBuilder = true)
 @Schema(description = "Modèle tournoi")
 public record TournamentRequestDto(
-		@NotBlank(message = "Le nom du tournoi est obligatoire") @Schema(description = "Le nom du tournoi", example = "CAMPIONATO") String name,
+		@NotBlank(message = "Le nom du tournoi est obligatoire") @Schema(description = "Le nom du tournoi", example = "CAMPIONATO") String title,
 
 		@Schema(description = "Description du tournoi", example = "Tournoi d'été") String description,
 

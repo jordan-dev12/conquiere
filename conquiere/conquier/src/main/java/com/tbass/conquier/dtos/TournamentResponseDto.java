@@ -9,7 +9,7 @@ public record TournamentResponseDto(
 
 		Long id,
 
-		String name,
+		String title,
 
 		String description,
 

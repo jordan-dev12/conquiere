@@ -13,14 +13,14 @@ import com.tbass.conquier.entity.TournamentEntity;
 public interface TournamentMapper {
 
 	@Mapping(target = "id", source = "entity.id")
-	@Mapping(target = "name", source = "entity.name")
+	@Mapping(target = "title", source = "entity.title")
 	@Mapping(target = "description", source = "entity.description")
 	@Mapping(target = "dateIssued", source = "entity.dateIssued")
 	@Mapping(target = "eventDate", source = "entity.eventDate")
 	@Mapping(target = "adminId", expression = "java(entity.getCreator().getId())")
 	TournamentResponseDto toDto(TournamentEntity entity);
 
-	@Mapping(target = "name", source = "dto.name")
+	@Mapping(target = "title", source = "dto.title")
 	@Mapping(target = "description", source = "dto.description")
 	@Mapping(target = "eventDate", source = "dto.eventDate")
 	@Mapping(target = "creator", ignore = true)

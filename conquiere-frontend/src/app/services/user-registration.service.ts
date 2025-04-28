@@ -16,4 +16,8 @@ export class UserRegistrationService {
 
     return this.http.post<User>(`${this.apiUrl.getUserUrl()}/register`, userData)
   }
+
+  getCurrentUser(): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl.getUserUrl()}/get`)
+  }
 }

@@ -23,6 +23,15 @@
         <!-- Right elements -->
         <div class="d-flex align-items-center">
 
+            <!-- Create new tournoi -->
+            @if(hasAdmin()){
+            <div class="dropdown" (click)="createTournoiModal()">
+                <a data-mdb-dropdown-init class="text-reset me-3 dropdown-toggle hidden-arrow"
+                    id="navbarDropdownMenuLink" role="button" aria-expanded="false">
+                    <i class="fa fa-plus" aria-hidden="true"><span>Cree tournoi</span> </i>
+                </a>
+            </div>
+            }
             <!-- Notifications -->
             <div class="dropdown">
                 <a data-mdb-dropdown-init class="text-reset me-3 dropdown-toggle hidden-arrow" href="#"
@@ -64,7 +73,7 @@
 <div class="py-6">
     <div class="row">
 
-        @for(item of items;track item){
+        @for(tournoi of tounois();track tournoi){
         <div class="col-lg-3 col-12">
             <!-- card -->
             <div class="card mb-5 rounded-3">
@@ -75,10 +84,9 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the card's content.</p>
-                        <button type="button" class="btn btn-primary" data-mdb-ripple-init>Button</button>
+                        <h5 class="card-title">{{tournoi.title}}</h5>
+                        <p class="card-text">{{tournoi.description}}</p>
+                        <button type="button" class="btn btn-primary" data-mdb-ripple-init>S'inscrire</button>
                     </div>
                 </div>
 

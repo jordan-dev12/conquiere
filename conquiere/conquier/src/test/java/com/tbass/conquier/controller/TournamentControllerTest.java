@@ -113,7 +113,7 @@ public class TournamentControllerTest extends AbstractIntegrationTest {
 			Long adminId = idHelper.getUserIdByEmail("admin@admin.com");
 
 			TournamentRequestDto tournamentRequestDto = TournamentRequestDto.builder()
-				.name("Grand prix")
+				.title("Grand prix")
 				.description("Premier experience")
 				.eventDate(evenDate)
 				.build();
@@ -135,7 +135,7 @@ public class TournamentControllerTest extends AbstractIntegrationTest {
 
 			LocalDate evenDate = DATE_ISSUE.minusDays(7);
 			TournamentRequestDto tournamentRequestDto = TournamentRequestDto.builder()
-				.name("Conforama")
+				.title("Conforama")
 				.description("1er competitions du valle")
 				.eventDate(evenDate)
 				.build();
