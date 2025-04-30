@@ -8,6 +8,9 @@ import { UserRegistrationService } from '../../../services/user-registration.ser
 import { User } from '../../../models/user.model';
 import { CreateTournoiModalComponent } from '../../../custom/create-tournoi-modal/create-tournoi-modal.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { AuthService } from '../../../services/auth.service';
+import { HOME } from '../../../constants/url';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -20,6 +23,8 @@ export class DashboardUserComponent implements OnInit {
 
   tournoiService = inject(TournoiService)
   userService = inject(UserRegistrationService)
+  authServivce = inject(AuthService)
+  router = inject(Router)
   private matDialog = inject(MatDialog);
 
   tounois = signal<Tournoi[] | null>(null)
@@ -65,6 +70,8 @@ export class DashboardUserComponent implements OnInit {
     });
   }
 
-
-
+  logout() {
+    this.authServivce.logout();
+    this.router.navigate([HOME.base]);
+  }
 }
