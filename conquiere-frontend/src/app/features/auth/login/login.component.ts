@@ -14,7 +14,6 @@ import { AuthService } from '../../../services/auth.service';
 export class LoginComponent {
 
   readonly AUTH = AUTH_URL;
-  readonly USER = USER_URL;
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
@@ -50,7 +49,7 @@ export class LoginComponent {
 
     this.authService.login(request).subscribe(response => {
       this.authService.setToken(response)
-      this.router.navigate([this.USER.dashboard]);
+      this.router.navigate([USER_URL.dashboard]);
     });
   }
 

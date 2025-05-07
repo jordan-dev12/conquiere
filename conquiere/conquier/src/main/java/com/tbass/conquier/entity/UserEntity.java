@@ -54,6 +54,9 @@ public class UserEntity {
 	@NotNull
 	private LocalDate birthdate;
 
+	@NotNull
+	private Boolean isActivated;
+
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
 	private Collection<String> roles = new ArrayList<>();

@@ -39,13 +39,15 @@ public class UserServiceImpl implements UserService {
 		UserEntity userEntity = userMapper.toEntity(userRegistrationDto);
 		userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
 		addRole(userEntity, Role.USER.getValue());
+		userEntity.setIsActivated(true);
 		return userMapper.toDto(userRepository.save(userEntity));
 	}
 
 	@Override
 	public void delete(long id) {
-		findById(id);
-		userRepository.deleteById(id);
+		UserEntity userEntity = findById(id);
+		userEntity.setIsActivated(false);
+		userRepository.save(userEntity);
 	}
 
 	@Override

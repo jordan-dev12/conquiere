@@ -74,4 +74,13 @@ export class DashboardUserComponent implements OnInit {
     this.authServivce.logout();
     this.router.navigate([HOME.base]);
   }
+
+  inscriptionTournoi(tournoi: Tournoi) {
+    if (tournoi.id !== undefined) {
+      this.tournoiService.inscriptionTournoi(tournoi.id).subscribe(() => {
+      });
+    }
+
+  }
+
 }

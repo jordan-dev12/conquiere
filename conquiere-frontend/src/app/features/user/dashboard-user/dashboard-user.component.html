@@ -79,7 +79,8 @@
                         <h5 class="card-title">{{tournoi.title}}</h5>
                         <p class="card-text">{{tournoi.description}}</p>
                         @if(!hasAdmin()){
-                        <button type="button" class="btn btn-primary" data-mdb-ripple-init>S'inscrire</button>
+                        <button type="button" class="btn btn-primary" (click)="inscriptionTournoi(tournoi)"
+                            data-mdb-ripple-init>S'inscrire</button>
                         }
                     </div>
                 </div>

@@ -18,4 +18,7 @@ export class ApiService {
   getTournoiUrl(): string {
     return `${this.baseUrl}/api/tournoi`;
   }
+  getRegisterTournoiUrl(): string {
+    return `${this.baseUrl}/api/regis`;
+  }
 }

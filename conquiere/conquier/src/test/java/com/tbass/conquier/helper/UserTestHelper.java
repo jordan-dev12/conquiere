@@ -120,6 +120,7 @@ public class UserTestHelper {
 			userEntity.setSurname(surname);
 			userEntity.setPassword(passwordEncoder.encode(password));
 			roles.add(Role.USER.getValue());
+			userEntity.setIsActivated(true);
 			userEntity.setRoles(roles);
 
 			UserEntity savedUser = userRepository.save(userEntity);

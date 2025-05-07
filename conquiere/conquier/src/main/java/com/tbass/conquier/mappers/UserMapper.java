@@ -18,6 +18,7 @@ public interface UserMapper {
 	@Mapping(target = "email", source = "entity.email")
 	@Mapping(target = "birthdate", source = "entity.birthdate", dateFormat = "dd-MM-yyyy")
 	@Mapping(target = "roles", source = "entity.roles")
+	@Mapping(target = "isActivated", source = "entity.isActivated")
 	UserRegistrationResponseDto toDto(UserEntity entity);
 
 	@Mapping(target = "name", source = "dto.name")
@@ -28,6 +29,7 @@ public interface UserMapper {
 	@Mapping(target = "roles", ignore = true)
 	@Mapping(target = "id", ignore = true)
 	@Mapping(target = "tournaments", ignore = true)
+	@Mapping(target = "isActivated", ignore = true)
 	@Mapping(target = "createdTournaments", ignore = true)
 	UserEntity toEntity(UserRegistrationRequestDto dto);
 

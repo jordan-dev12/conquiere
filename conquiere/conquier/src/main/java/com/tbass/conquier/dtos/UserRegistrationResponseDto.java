@@ -16,6 +16,7 @@ public record UserRegistrationResponseDto(
 		String surname,
 
 		String email,
+		Boolean isActivated,
 
 		@JsonFormat(pattern = "dd-MM-yyyy") LocalDate birthdate,
 
